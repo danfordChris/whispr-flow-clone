@@ -1,36 +1,57 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# whisperflow
 
-## Getting Started
+A port of the [wisprflow.ai](https://wisprflow.ai) marketing site to Next.js 16 (App Router) + Tailwind v4.
 
-First, run the development server:
+The original is a Webflow build driven by GSAP ScrollTrigger. This port reimplements
+the same structure, design system, and interactions with React state, CSS animations,
+`IntersectionObserver`, and sticky scroll tracks — no GSAP or Webflow runtime.
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Design system
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+Tokens in `app/globals.css` are lifted from the live site's Webflow variable collection:
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+| Token | Value | Use |
+| --- | --- | --- |
+| `lumen` | `#ffffeb` | page background |
+| `lumen-dark` | `#e4e4d0` | segmented control, title bars |
+| `vast` | `#1a1a1a` | text, borders, dark sections |
+| `dawn` | `#f0d7ff` | primary button, accent panels |
+| `fathom` | `#034f46` | teal feature sections |
+| `glow` / `flare` / `signal` | `#ffa946` / `#ff6c4c` / `#ffbcf2` | filler / correction / repetition highlights |
 
-## Learn More
+Type is the original pairing: **EB Garamond** (display, italic for emphasis) and
+**Figtree** (body), loaded via `next/font/google`.
 
-To learn more about Next.js, take a look at the following resources:
+Custom classes live inside `@layer components` so Tailwind utilities always win
+over them — without this, `.btn { display: inline-flex }` beats `hidden` and the
+nav CTA leaks onto mobile.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Sections
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+| Component | What it ports |
+| --- | --- |
+| `Nav` | Sticky pill bar, Dictation/Notetaker segmented toggle, per-character hover roll on links, mobile sheet |
+| `Hero` | Display headline, plus two counter-rotating SVG `textPath` rings (messy transcript in grey, cleaned copy on a black band) sized as huge circles tangent to the mic pill |
+| `LogoMarquee` | Dark rounded section with an infinite horizontal logo marquee |
+| `FasterThanTyping` | Teal panel comparing Keyboard 45 wpm vs Flow 220 wpm as vertical marquees running at proportional speeds |
+| `CleanupDemo` | Scroll-linked demo: raw dictation types in, fillers/corrections/repetitions light up and strike through, "Cleaning up…" resolves to clean text, then sends as chat bubbles |
+| `HowItWorks` | Sticky 300vh track where scroll position drives the three-tab rail, indicator, stage visuals, and copy (tabs also clickable) |
+| `MakesItEasy` | Four alternating feature rows with live demos: language switching, vocabulary modal, snippet expansion, tone toggle |
+| `Privacy` | Privacy Mode switch and certification chips |
+| `Testimonials` | Dark section with two case studies and four quote cards |
+| `Faq` | Two-pane question list / answer panel on desktop, accordion on mobile |
+| `StartFlowing`, `Footer` | Closing CTA and the full footer link map |
 
-## Deploy on Vercel
+## Notes
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+- Company wordmarks in the logo marquee are set as type rather than hot-linked
+  brand SVGs from the original's CDN.
+- All motion is gated behind `prefers-reduced-motion`.
+- Scroll-linked sections read `getBoundingClientRect()` inside a
+  `requestAnimationFrame`-throttled scroll listener; they degrade to their
+  first frame if JS is unavailable.
+# whispr-flow-clone
