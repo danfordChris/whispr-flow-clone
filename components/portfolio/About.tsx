@@ -13,20 +13,38 @@ import {
 } from "@/lib/portfolio";
 
 /* ------------------------------------------------------------------
-   A scattered field of cards on a dark canvas. As the section scrolls
-   the whole field drifts up, each card at its own rate, so they pass
-   the viewport at different speeds.
+   A scattered field of cards. As the section scrolls the field drifts
+   up, each card at its own rate, so they pass the viewport at
+   different speeds.
+
+   It sits on the page's own cream surface rather than a dark band —
+   About lands after a long run of cream sections, and dropping to
+   black there reads as arriving somewhere else. The colour comes from
+   the cards, in the same bordered / hard-shadow language as the
+   project and product cards.
    ------------------------------------------------------------------ */
 
-type Tone = "cream" | "mint" | "glow" | "flare" | "dawn" | "signal";
+type Tone =
+  | "white"
+  | "mint"
+  | "glow"
+  | "flare"
+  | "dawn"
+  | "signal"
+  | "deep"
+  | "ink";
 
-const TONE: Record<Tone, { bg: string; fg: string; sub: string }> = {
-  cream: { bg: "#ffffeb", fg: "#1a1a1a", sub: "#1a1a1ab3" },
-  mint: { bg: "#cef5ca", fg: "#1a1a1a", sub: "#1a1a1ab3" },
-  glow: { bg: "#ffa946", fg: "#1a1a1a", sub: "#1a1a1ab3" },
-  flare: { bg: "#ff6c4c", fg: "#1a1a1a", sub: "#1a1a1ac0" },
-  dawn: { bg: "#f0d7ff", fg: "#1a1a1a", sub: "#1a1a1ab3" },
-  signal: { bg: "#ffbcf2", fg: "#1a1a1a", sub: "#1a1a1ab3" },
+/** Card fills. `deep` and `ink` are the two dark accents that give the field
+    punch without turning the whole section into a dark band. */
+const TONE: Record<Tone, { bg: string; fg: string }> = {
+  white: { bg: "#ffffff", fg: "#1a1a1a" },
+  mint: { bg: "#cef5ca", fg: "#1a1a1a" },
+  glow: { bg: "#ffa946", fg: "#1a1a1a" },
+  flare: { bg: "#ff6c4c", fg: "#1a1a1a" },
+  dawn: { bg: "#f0d7ff", fg: "#1a1a1a" },
+  signal: { bg: "#ffbcf2", fg: "#1a1a1a" },
+  deep: { bg: "#034f46", fg: "#ffffeb" },
+  ink: { bg: "#1a1a1a", fg: "#ffffeb" },
 };
 
 type Card = {
@@ -75,7 +93,7 @@ function Stat({ value, label }: { value: string; label: string }) {
 const CARDS: Card[] = [
   {
     id: "bio",
-    tone: "cream",
+    tone: "white",
     x: 4,
     y: 60,
     w: 400,
@@ -161,7 +179,7 @@ const CARDS: Card[] = [
   },
   {
     id: "activities",
-    tone: "cream",
+    tone: "white",
     x: 34,
     y: 900,
     w: 420,
@@ -197,7 +215,7 @@ const CARDS: Card[] = [
   },
   {
     id: "stack",
-    tone: "mint",
+    tone: "deep",
     x: 70,
     y: 1180,
     w: 360,
@@ -215,7 +233,7 @@ const CARDS: Card[] = [
   },
   {
     id: "socials",
-    tone: "cream",
+    tone: "ink",
     x: 40,
     y: 1420,
     w: 380,
@@ -266,7 +284,7 @@ function ScatterCard({
 
   return (
     <div
-      className="absolute rounded-[24px] p-7 shadow-[0_24px_60px_-30px_#00000080]"
+      className="absolute rounded-[24px] border-2 border-vast p-7 shadow-[6px_6px_0_0_#1a1a1a]"
       style={style}
     >
       {card.body}
@@ -278,10 +296,10 @@ export default function About() {
   const { ref, progress } = useScrollProgress<HTMLDivElement>();
 
   return (
-    <section id="about" className="rounded-t-[80px] bg-vast text-lumen">
+    <section id="about" className="bg-lumen">
       <div className="px-5 pt-28 md:px-10 md:pt-36">
         <Reveal className="mx-auto max-w-[1240px] text-center">
-          <p className="eyebrow text-lumen">About</p>
+          <p className="eyebrow text-dark-70">About</p>
           <h2 className="mt-4 font-[family-name:var(--font-display)] text-[clamp(2.5rem,5.4vw,4.6875rem)] leading-[1] font-normal text-balance">
             Engineer first, <em className="italic">product-minded always.</em>
           </h2>
@@ -306,7 +324,7 @@ export default function About() {
           return (
             <div
               key={c.id}
-              className="rounded-[24px] p-6"
+              className="rounded-[24px] border-2 border-vast p-6"
               style={{ background: t.bg, color: t.fg }}
             >
               {c.body}
