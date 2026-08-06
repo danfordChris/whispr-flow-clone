@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import { PathMarquee, Reveal, useScrollProgress, Waveform } from "../primitives";
-import { projects, stats } from "@/lib/portfolio";
+import { ipfModules, projects, stats } from "@/lib/portfolio";
 
 const CURVE_STRAIGHT = "M0 44 H2000";
 const CURVE_FAST =
@@ -16,14 +16,54 @@ const clamp01 = (n: number) => Math.min(Math.max(n, 0), 1);
 const range = (p: number, from: number, to: number) =>
   clamp01((p - from) / (to - from));
 
-/** Walks through the platform's modules as you scroll the pinned card. */
-const MODULES = [
-  { name: "Dashboard", detail: "Operational visibility across every team" },
-  { name: "Meals", detail: "Planning and daily catering workflows" },
-  { name: "Tasks", detail: "Assignment, tracking and completion states" },
-  { name: "PMO", detail: "Programme governance and process control" },
-  { name: "Users", detail: "Roles, permissions and access management" },
-];
+const MODULES = ipfModules;
+
+/** The real web + mobile screens for a module, cross-fading as you scroll. */
+function ModuleShots({ active }: { active: number }) {
+  return (
+    <div className="relative h-full w-full">
+      {/* browser screen */}
+      <div className="absolute inset-y-0 right-0 left-0 overflow-hidden rounded-[14px] border-2 border-vast bg-vast shadow-[0_20px_50px_-24px_#000000cc]">
+        <div className="flex h-[26px] items-center gap-1.5 border-b-2 border-vast bg-lumen-dark px-2.5">
+          <span className="h-2 w-2 rounded-full bg-flare" />
+          <span className="h-2 w-2 rounded-full bg-glow" />
+          <span className="h-2 w-2 rounded-full bg-success" />
+          <span className="ml-1.5 truncate text-[10px] font-medium text-dark-70">
+            ipf-os · {MODULES[active].name.toLowerCase()}
+          </span>
+        </div>
+        <div className="relative h-[calc(100%-26px)] w-full">
+          {MODULES.map((m, i) => (
+            <Image
+              key={m.id}
+              src={m.web}
+              alt={`IPF OS ${m.name} — web`}
+              fill
+              sizes="420px"
+              className="object-cover object-top transition-opacity duration-500"
+              style={{ opacity: i === active ? 1 : 0 }}
+            />
+          ))}
+        </div>
+      </div>
+
+      {/* phone screen, overlapping the corner */}
+      <div className="absolute -bottom-3 -left-6 h-[164px] w-[80px] overflow-hidden rounded-[14px] border-2 border-vast bg-vast shadow-[0_16px_36px_-18px_#000000cc]">
+        {MODULES.map((m, i) => (
+          <Image
+            key={m.id}
+            src={m.mobile}
+            alt={`IPF OS ${m.name} — mobile`}
+            fill
+            sizes="80px"
+            className="object-cover object-top transition-opacity duration-500"
+            style={{ opacity: i === active ? 1 : 0 }}
+          />
+        ))}
+      </div>
+    </div>
+  );
+}
 
 function ModulePanel({ p }: { p: number }) {
   const active = Math.min(
@@ -32,65 +72,73 @@ function ModulePanel({ p }: { p: number }) {
   );
 
   return (
-    <div className="flex h-full flex-col justify-between p-8">
-      <div>
-        <p className="text-[13px] font-semibold tracking-[0.08em] text-lumen/50 uppercase">
-          {featured.category.join(" + ")} · enterprise
-        </p>
-        <h3 className="mt-3 font-[family-name:var(--font-display)] text-[38px] leading-[1] text-lumen">
-          IPF OS
-        </h3>
-      </div>
-
-      {/* module switcher */}
-      <div className="flex gap-2">
-        {MODULES.map((m, i) => (
-          <span
-            key={m.name}
-            className="rounded-full border px-3 py-1.5 text-[12px] font-semibold transition-all duration-400"
-            style={{
-              borderColor: i === active ? "#ffffeb" : "#ffffeb40",
-              background: i === active ? "#ffffeb" : "transparent",
-              color: i === active ? "#1a1a1a" : "#ffffeb99",
-            }}
-          >
-            {m.name}
-          </span>
-        ))}
-      </div>
-
-      <div className="relative min-h-[74px] rounded-xl border border-lumen/20 bg-vast/40 px-4 py-3 backdrop-blur-sm">
-        {MODULES.map((m, i) => (
-          <div
-            key={m.name}
-            className="transition-all duration-400"
-            style={{
-              opacity: i === active ? 1 : 0,
-              position: i === 0 ? "relative" : "absolute",
-              inset: i === 0 ? undefined : "12px 16px",
-            }}
-          >
-            <p className="text-[15px] font-semibold text-lumen">{m.name}</p>
-            <p className="mt-1 text-[13px] leading-[1.45] text-lumen/70">
-              {m.detail}
-            </p>
-          </div>
-        ))}
-      </div>
-
-      <div className="flex flex-wrap items-center gap-2">
-        <div className="flex h-[34px] items-center gap-2 rounded-full border border-lumen/25 bg-vast/70 px-3">
-          <span className="h-1.5 w-1.5 rounded-full bg-flare" />
-          <Waveform height={16} bars={12} color="#ffffeb" />
+    <div className="grid h-full grid-cols-[1fr_360px] gap-8 p-8">
+      {/* copy column */}
+      <div className="flex flex-col justify-between">
+        <div>
+          <p className="text-[13px] font-semibold tracking-[0.08em] text-lumen/50 uppercase">
+            {featured.category.join(" + ")} · enterprise
+          </p>
+          <h3 className="mt-3 font-[family-name:var(--font-display)] text-[38px] leading-[1] text-lumen">
+            IPF OS
+          </h3>
         </div>
-        {featured.tech.slice(0, 4).map((t) => (
-          <span
-            key={t}
-            className="rounded-full bg-lumen/10 px-3 py-1.5 text-[11px] font-semibold text-lumen/80"
-          >
-            {t}
-          </span>
-        ))}
+
+        {/* module switcher */}
+        <div className="flex flex-wrap gap-2">
+          {MODULES.map((m, i) => (
+            <span
+              key={m.id}
+              className="rounded-full border px-3 py-1.5 text-[12px] font-semibold transition-all duration-400"
+              style={{
+                borderColor: i === active ? "#ffffeb" : "#ffffeb40",
+                background: i === active ? "#ffffeb" : "transparent",
+                color: i === active ? "#1a1a1a" : "#ffffeb99",
+              }}
+            >
+              {m.name}
+            </span>
+          ))}
+        </div>
+
+        <div className="relative min-h-[74px] rounded-xl border border-lumen/20 bg-vast/40 px-4 py-3 backdrop-blur-sm">
+          {MODULES.map((m, i) => (
+            <div
+              key={m.id}
+              className="transition-all duration-400"
+              style={{
+                opacity: i === active ? 1 : 0,
+                position: i === 0 ? "relative" : "absolute",
+                inset: i === 0 ? undefined : "12px 16px",
+              }}
+            >
+              <p className="text-[15px] font-semibold text-lumen">{m.name}</p>
+              <p className="mt-1 text-[13px] leading-[1.45] text-lumen/70">
+                {m.detail}
+              </p>
+            </div>
+          ))}
+        </div>
+
+        <div className="flex flex-wrap items-center gap-2">
+          <div className="flex h-[34px] items-center gap-2 rounded-full border border-lumen/25 bg-vast/70 px-3">
+            <span className="h-1.5 w-1.5 rounded-full bg-flare" />
+            <Waveform height={16} bars={12} color="#ffffeb" />
+          </div>
+          {featured.tech.slice(0, 4).map((t) => (
+            <span
+              key={t}
+              className="rounded-full bg-lumen/10 px-3 py-1.5 text-[11px] font-semibold text-lumen/80"
+            >
+              {t}
+            </span>
+          ))}
+        </div>
+      </div>
+
+      {/* the actual product */}
+      <div className="relative my-2">
+        <ModuleShots active={active} />
       </div>
     </div>
   );
@@ -121,7 +169,7 @@ export default function FeaturedWork() {
           <div className="sticky top-0 flex h-screen items-center">
             <div className="relative mx-auto h-[501px] w-full max-w-[1160px] overflow-hidden">
               {/* left — headline stat */}
-              <div className="absolute inset-y-0 left-0 flex w-[325px] flex-col justify-between rounded-[40px] border-4 border-lumen/10 p-8">
+              <div className="absolute inset-y-0 left-0 z-10 flex w-[325px] flex-col justify-between rounded-[40px] border-4 border-lumen/10 bg-fathom/60 p-8 backdrop-blur-[2px]">
                 <div>
                   <div className="text-[15px] font-semibold text-lumen/60">
                     Modules
@@ -144,15 +192,8 @@ export default function FeaturedWork() {
               </div>
 
               {/* right — the platform card */}
-              <div className="absolute inset-y-0 left-[325px] w-[835px] overflow-hidden rounded-[40px]">
-                <Image
-                  src="/img/flow-card.jpg"
-                  alt=""
-                  fill
-                  sizes="835px"
-                  className="object-cover opacity-30"
-                />
-                <div className="absolute inset-0 bg-gradient-to-br from-fathom/85 via-fathom/70 to-vast/60" />
+              <div className="absolute inset-y-0 left-[325px] z-10 w-[835px] overflow-hidden rounded-[40px] bg-lumen/[0.06]">
+                <div className="absolute inset-0 bg-gradient-to-br from-fathom/60 to-vast/40" />
                 <div
                   className="absolute inset-0 transition-opacity duration-300"
                   style={{
@@ -202,20 +243,64 @@ export default function FeaturedWork() {
           </div>
         </div>
 
-        {/* mobile */}
-        <div className="mx-auto mt-14 max-w-[1160px] md:hidden">
-          <div className="relative h-[380px] overflow-hidden rounded-[28px]">
-            <Image
-              src="/img/flow-card.jpg"
-              alt=""
-              fill
-              sizes="100vw"
-              className="object-cover opacity-30"
-            />
-            <div className="absolute inset-0 bg-gradient-to-br from-fathom/85 via-fathom/70 to-vast/60" />
-            <div className="absolute inset-0">
-              <ModulePanel p={0.55} />
+        {/* mobile — the modules as a plain, readable list of screens */}
+        <div className="mx-auto mt-12 max-w-[1160px] md:hidden">
+          <div className="rounded-[28px] border-2 border-lumen/15 bg-lumen/[0.06] p-6">
+            <p className="text-[12px] font-semibold tracking-[0.08em] text-lumen/50 uppercase">
+              {featured.category.join(" + ")} · enterprise
+            </p>
+            <h3 className="mt-2 font-[family-name:var(--font-display)] text-[34px] leading-[1] text-lumen">
+              IPF OS
+            </h3>
+            <div className="mt-5 flex gap-8">
+              <div>
+                <div className="font-[family-name:var(--font-display)] text-[34px] leading-none text-lumen">
+                  {MODULES.length}
+                </div>
+                <div className="text-[12px] text-lumen/60">modules</div>
+              </div>
+              <div>
+                <div className="font-[family-name:var(--font-display)] text-[34px] leading-none text-lumen">
+                  2
+                </div>
+                <div className="text-[12px] text-lumen/60">platforms</div>
+              </div>
             </div>
+          </div>
+
+          <div className="mt-4 flex flex-col gap-5">
+            {MODULES.map((m) => (
+              <figure key={m.id}>
+                <div className="flex gap-3">
+                  <div className="relative aspect-[16/10] flex-1 overflow-hidden rounded-[14px] border-2 border-vast bg-vast">
+                    <Image
+                      src={m.web}
+                      alt={`IPF OS ${m.name} — web`}
+                      fill
+                      sizes="70vw"
+                      className="object-cover object-top"
+                    />
+                  </div>
+                  <div className="relative w-[64px] shrink-0 overflow-hidden rounded-[12px] border-2 border-vast bg-vast">
+                    <Image
+                      src={m.mobile}
+                      alt={`IPF OS ${m.name} — mobile`}
+                      fill
+                      sizes="64px"
+                      className="object-cover object-top"
+                    />
+                  </div>
+                </div>
+                <figcaption className="mt-2">
+                  <span className="text-[15px] font-semibold text-lumen">
+                    {m.name}
+                  </span>
+                  <span className="ml-2 text-[13px] text-lumen/60">
+                    {m.detail}
+                  </span>
+                </figcaption>
+              </figure>
+            ))}
           </div>
         </div>
 

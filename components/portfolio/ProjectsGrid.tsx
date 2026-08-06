@@ -81,7 +81,7 @@ export default function ProjectsGrid() {
                 >
                   <div className="relative aspect-[8/5] overflow-hidden border-b-2 border-vast">
                     <Image
-                      src={`/img/work/${p.id}.jpg`}
+                      src={p.image}
                       alt={p.title}
                       fill
                       sizes="(min-width:1024px) 380px, (min-width:768px) 50vw, 100vw"

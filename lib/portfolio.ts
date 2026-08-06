@@ -243,11 +243,53 @@ export type Project = {
   /** shots shown in the detail view */
   shots: { id: string; title: string }[];
   featured?: boolean;
+  /** card image — real screenshots recovered from the previous portfolio */
+  image: string;
 };
+
+/** IPF OS modules, each with its web and mobile screen. */
+export const ipfModules = [
+  {
+    id: "dashboard",
+    name: "Dashboard",
+    detail: "Operational visibility across every team",
+    web: "/img/work/ipf-os/dashboard-web.jpg",
+    mobile: "/img/work/ipf-os/dashboard-mobile.png",
+  },
+  {
+    id: "meals",
+    name: "Meals",
+    detail: "Planning and daily catering workflows",
+    web: "/img/work/ipf-os/meals-web.jpg",
+    mobile: "/img/work/ipf-os/meals-mobile.png",
+  },
+  {
+    id: "tasks",
+    name: "Tasks",
+    detail: "Assignment, tracking and completion states",
+    web: "/img/work/ipf-os/tasks-web.jpg",
+    mobile: "/img/work/ipf-os/tasks-mobile.png",
+  },
+  {
+    id: "pmo",
+    name: "PMO",
+    detail: "Programme governance and process control",
+    web: "/img/work/ipf-os/pmo-web.jpg",
+    mobile: "/img/work/ipf-os/pmo-mobile.png",
+  },
+  {
+    id: "users",
+    name: "Users",
+    detail: "Roles, permissions and access management",
+    web: "/img/work/ipf-os/users-web.jpg",
+    mobile: "/img/work/ipf-os/users-mobile.png",
+  },
+];
 
 export const projects: Project[] = [
   {
     id: "ipf-os",
+    image: "/img/work/ipf-os.png",
     title: "IPF OS (Enterprise Platform)",
     description:
       "A cross-platform enterprise operations system (web & mobile) designed for an InTech construction company to centralize core business functions. It manages meal planning, task management, user roles, and PMO workflows within a unified digital ecosystem. The platform improves operational visibility, coordination, and process control across teams through modular and scalable architecture.",
@@ -278,6 +320,7 @@ export const projects: Project[] = [
   },
   {
     id: "bantu-soko",
+    image: "/img/work/bantu-soko.jpg",
     title: "Bantu Soko App",
     description:
       "A mobile app that collects all important services like transport, event planning, and marketplace in one place, making it easier for users to access and use these services without the need to download multiple apps.",
@@ -288,6 +331,7 @@ export const projects: Project[] = [
   },
   {
     id: "mealgro",
+    image: "/img/work/mealgro.jpg",
     title: "MealGro App",
     description:
       "A mobile application that helps users plan their meals, create shopping lists, and reduce food waste by suggesting recipes based on available ingredients.",
@@ -304,6 +348,7 @@ export const projects: Project[] = [
   },
   {
     id: "tumafast",
+    image: "/img/work/tumafast.jpg",
     title: "Tumafast App",
     description:
       "A mobile application that connects users with local delivery services for quick and efficient package delivery within their city and outside their city at affordable rates.",
@@ -314,6 +359,7 @@ export const projects: Project[] = [
   },
   {
     id: "ocean-ecommerce",
+    image: "/img/work/ocean-ecommerce.jpg",
     title: "Ocean E-commerce",
     description:
       "An e-commerce app that links the manufacturer of the products down to the end-user, simplifying the marketing process.",
@@ -324,6 +370,7 @@ export const projects: Project[] = [
   },
   {
     id: "changisha",
+    image: "/img/work/changisha.jpg",
     title: "Changisha App",
     description:
       "Changisha App is a crowdfunding platform designed to help individuals and groups raise money for various causes, such as medical expenses, education, community projects, and personal emergencies. It simplifies the fundraising process by allowing users to create campaigns, share them with potential donors, and receive contributions seamlessly through mobile money and digital payment methods.",
@@ -334,6 +381,7 @@ export const projects: Project[] = [
   },
   {
     id: "code-challenge",
+    image: "/img/work/code-challenge.png",
     title: "Code Challenge App",
     description:
       "A Trello-like application that allows users to create boards, lists, and cards to organize their tasks and projects. The app provides a user-friendly interface for managing and collaborating on tasks, making it easier for teams to stay organized and productive.",
@@ -343,6 +391,7 @@ export const projects: Project[] = [
   },
   {
     id: "nasafiri",
+    image: "/img/work/nasafiri.png",
     title: "Nasafiri",
     description:
       "A web application aimed at reducing the hassle of transport booking, saving time for passengers, and offering insurance options.",
@@ -352,6 +401,7 @@ export const projects: Project[] = [
   },
   {
     id: "cypherz",
+    image: "/img/work/cypherz.jpg",
     title: "Cypherz",
     description:
       "An agriculture platform that eliminates the middleman in agricultural products, linking sellers and buyers directly.",
@@ -361,6 +411,7 @@ export const projects: Project[] = [
   },
   {
     id: "stock-management",
+    image: "/img/work/stock-management.jpg",
     title: "Stock Management",
     description:
       "A mobile application designed to manage inventory, notify the owner about stock levels, and suggest products to increase annual gains.",
@@ -370,6 +421,7 @@ export const projects: Project[] = [
   },
   {
     id: "vikoba-plus",
+    image: "/img/work/vikoba-plus.jpg",
     title: "Vikoba+",
     description:
       "A mobile app that simplifies money management for small-scale groups (Vikoba), making it easy to track expenses and income.",
@@ -379,6 +431,7 @@ export const projects: Project[] = [
   },
   {
     id: "tetris-game",
+    image: "/img/work/tetris-game.jpg",
     title: "Tetris Game",
     description:
       "A classic Tetris game built with the Flutter framework for mobile devices. The game features smooth controls, colorful graphics, and increasing difficulty levels to keep players engaged.",
