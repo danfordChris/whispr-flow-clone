@@ -92,6 +92,10 @@ export default function PortfolioHero() {
           fill="#ffffeb"
           stroke="#1A1A1A"
           strokeWidth={30}
+          /* the two curves are one continuous line, but the boxes have
+             different heights so the join lands 4px right / 12px low —
+             pull the ribbon back onto the grey path's end point */
+          className="-mt-3 -ml-1"
         />
       </div>
 
