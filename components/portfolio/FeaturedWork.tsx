@@ -18,48 +18,56 @@ const range = (p: number, from: number, to: number) =>
 
 const MODULES = ipfModules;
 
-/** The real web + mobile screens for a module, cross-fading as you scroll. */
+/**
+ * The real web + mobile screens for a module, cross-fading as you scroll.
+ * Both frames match their source aspect ratio (web ≈ 16:9, mobile 736:1600)
+ * so nothing gets cropped.
+ */
 function ModuleShots({ active }: { active: number }) {
   return (
-    <div className="relative h-full w-full">
-      {/* browser screen */}
-      <div className="absolute inset-y-0 right-0 left-0 overflow-hidden rounded-[14px] border-2 border-vast bg-vast shadow-[0_20px_50px_-24px_#000000cc]">
-        <div className="flex h-[26px] items-center gap-1.5 border-b-2 border-vast bg-lumen-dark px-2.5">
-          <span className="h-2 w-2 rounded-full bg-flare" />
-          <span className="h-2 w-2 rounded-full bg-glow" />
-          <span className="h-2 w-2 rounded-full bg-success" />
-          <span className="ml-1.5 truncate text-[10px] font-medium text-dark-70">
-            ipf-os · {MODULES[active].name.toLowerCase()}
-          </span>
+    <div className="relative flex h-full items-center">
+      <div className="relative w-full">
+        {/* browser */}
+        <div className="overflow-hidden rounded-[14px] border-2 border-vast bg-vast shadow-[0_20px_50px_-24px_#000000cc]">
+          <div className="flex h-[26px] items-center gap-1.5 border-b-2 border-vast bg-lumen-dark px-2.5">
+            <span className="h-2 w-2 rounded-full bg-flare" />
+            <span className="h-2 w-2 rounded-full bg-glow" />
+            <span className="h-2 w-2 rounded-full bg-success" />
+            <span className="ml-1.5 truncate text-[10px] font-medium text-dark-70">
+              ipf-os · {MODULES[active].name.toLowerCase()}
+            </span>
+          </div>
+          <div className="relative aspect-[16/9] w-full">
+            {MODULES.map((m, i) => (
+              <Image
+                key={m.id}
+                src={m.web}
+                alt={`IPF OS ${m.name} — web`}
+                fill
+                sizes="400px"
+                className="object-cover object-top transition-opacity duration-500"
+                style={{ opacity: i === active ? 1 : 0 }}
+              />
+            ))}
+          </div>
         </div>
-        <div className="relative h-[calc(100%-26px)] w-full">
-          {MODULES.map((m, i) => (
-            <Image
-              key={m.id}
-              src={m.web}
-              alt={`IPF OS ${m.name} — web`}
-              fill
-              sizes="420px"
-              className="object-cover object-top transition-opacity duration-500"
-              style={{ opacity: i === active ? 1 : 0 }}
-            />
-          ))}
-        </div>
-      </div>
 
-      {/* phone screen, overlapping the corner */}
-      <div className="absolute -bottom-3 -left-6 h-[164px] w-[80px] overflow-hidden rounded-[14px] border-2 border-vast bg-vast shadow-[0_16px_36px_-18px_#000000cc]">
-        {MODULES.map((m, i) => (
-          <Image
-            key={m.id}
-            src={m.mobile}
-            alt={`IPF OS ${m.name} — mobile`}
-            fill
-            sizes="80px"
-            className="object-cover object-top transition-opacity duration-500"
-            style={{ opacity: i === active ? 1 : 0 }}
-          />
-        ))}
+        {/* phone, overlapping the lower-left corner */}
+        <div className="absolute -bottom-14 -left-7 w-[88px] overflow-hidden rounded-[14px] border-2 border-vast bg-vast shadow-[0_16px_36px_-18px_#000000cc]">
+          <div className="relative aspect-[736/1600] w-full">
+            {MODULES.map((m, i) => (
+              <Image
+                key={m.id}
+                src={m.mobile}
+                alt={`IPF OS ${m.name} — mobile`}
+                fill
+                sizes="88px"
+                className="object-cover object-top transition-opacity duration-500"
+                style={{ opacity: i === active ? 1 : 0 }}
+              />
+            ))}
+          </div>
+        </div>
       </div>
     </div>
   );
@@ -72,7 +80,7 @@ function ModulePanel({ p }: { p: number }) {
   );
 
   return (
-    <div className="grid h-full grid-cols-[1fr_360px] gap-8 p-8">
+    <div className="grid h-full grid-cols-[1fr_400px] gap-7 p-8">
       {/* copy column */}
       <div className="flex flex-col justify-between">
         <div>
