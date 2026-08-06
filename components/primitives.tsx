@@ -63,9 +63,30 @@ export function Reveal({
   const ref = useRef<HTMLElement | null>(null);
   const [shown, setShown] = useState(false);
 
+  /**
+   * Measured from `getBoundingClientRect` on a rAF-throttled scroll listener
+   * rather than an IntersectionObserver.
+   *
+   * An IntersectionObserver drives the reveal — it is the cheap, correct
+   * mechanism for a visible page.
+   *
+   * The synchronous rect check on mount is the safety net: IO callbacks are
+   * suppressed while a document is hidden (prerender, background tab, some
+   * crawlers), and because the un-revealed state is `opacity: 0`, an observer
+   * that never fires would leave above-the-fold content invisible.
+   */
   useEffect(() => {
     const el = ref.current;
     if (!el) return;
+
+    // already on screen at mount → show it without waiting for the observer
+    const r = el.getBoundingClientRect();
+    const vh = window.innerHeight || 0;
+    if (vh > 0 && r.top < vh * 0.88 && r.bottom > 0) {
+      setShown(true);
+      return;
+    }
+
     const io = new IntersectionObserver(
       ([entry]) => {
         if (entry.isIntersecting) {
@@ -312,11 +333,18 @@ export function AppleIcon({ size = 14 }: { size?: number }) {
   );
 }
 
-/* Wispr Flow wordmark — bars + "Flow" */
-export function FlowLogo({ dark = false }: { dark?: boolean }) {
+/* Bars + wordmark. Defaults to the Wispr Flow mark; pass `label` to reuse
+   the same lock-up for another name. */
+export function FlowLogo({
+  dark = false,
+  label = "Flow",
+}: {
+  dark?: boolean;
+  label?: string;
+}) {
   const color = dark ? "#ffffeb" : "#1a1a1a";
   return (
-    <span className="inline-flex items-center gap-[7px]" aria-label="Wispr Flow">
+    <span className="inline-flex items-center gap-[7px]" aria-label={label}>
       <svg width="22" height="20" viewBox="0 0 22 20" aria-hidden="true">
         {[
           { x: 0, h: 9 },
@@ -345,7 +373,7 @@ export function FlowLogo({ dark = false }: { dark?: boolean }) {
           color,
         }}
       >
-        Flow
+        {label}
       </span>
     </span>
   );

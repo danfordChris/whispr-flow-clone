@@ -57,6 +57,20 @@ const clamp01 = (n: number) => Math.min(Math.max(n, 0), 1);
 const range = (p: number, from: number, to: number) =>
   clamp01((p - from) / (to - from));
 
+/* Cumulative character offsets and flag thresholds are fixed, so resolve them
+   once at module scope rather than recomputing (and mutating) each render. */
+let runningOffset = 0;
+const SEGMENTS = RAW.map((seg) => {
+  const start = runningOffset;
+  runningOffset += seg.t.length;
+  return {
+    ...seg,
+    start,
+    flagAt: BADGES.find((b) => b.kind === seg.k)?.at ?? null,
+  };
+});
+const TOTAL_CHARS = runningOffset;
+
 function CleanupPanel({ p }: { p: number }) {
   const typed = range(p, 0.3, 0.48);
   const flagged = range(p, 0.48, 0.66);
@@ -64,16 +78,11 @@ function CleanupPanel({ p }: { p: number }) {
   const cleaned = range(p, 0.74, 0.85);
   const sent = range(p, 0.85, 1);
 
-  const totalChars = RAW.reduce((n, s) => n + s.t.length, 0);
-  const shown = Math.round(typed * totalChars);
+  const shown = Math.round(typed * TOTAL_CHARS);
 
-  let consumed = 0;
-  const parts = RAW.map((seg, i) => {
-    const start = consumed;
-    consumed += seg.t.length;
-    const visible = clamp01((shown - start) / seg.t.length);
-    const badge = BADGES.find((b) => b.kind === seg.k);
-    const lit = badge ? flagged > badge.at : false;
+  const parts = SEGMENTS.map((seg, i) => {
+    const visible = clamp01((shown - seg.start) / seg.t.length);
+    const lit = seg.flagAt !== null && flagged > seg.flagAt;
     return { ...seg, i, visible, lit };
   });
 

@@ -1,31 +1,33 @@
-import Faq from "@/components/Faq";
-import FasterThanTyping from "@/components/FasterThanTyping";
-import Footer from "@/components/Footer";
-import Hero from "@/components/Hero";
-import HowItWorks from "@/components/HowItWorks";
-import LogoMarquee from "@/components/LogoMarquee";
-import MakesItEasy from "@/components/MakesItEasy";
-import Nav from "@/components/Nav";
-import Privacy from "@/components/Privacy";
-import StartFlowing from "@/components/StartFlowing";
-import Testimonials from "@/components/Testimonials";
+import About from "@/components/portfolio/About";
+import CareerTimeline from "@/components/portfolio/CareerTimeline";
+import ContactSection from "@/components/portfolio/ContactSection";
+import ExpertiseTrack from "@/components/portfolio/ExpertiseTrack";
+import FeaturedWork from "@/components/portfolio/FeaturedWork";
+import PortfolioFooter from "@/components/portfolio/PortfolioFooter";
+import PortfolioHero from "@/components/portfolio/PortfolioHero";
+import PortfolioNav from "@/components/portfolio/PortfolioNav";
+import Products from "@/components/portfolio/Products";
+import ProjectsGrid from "@/components/portfolio/ProjectsGrid";
+import ServicesTabs from "@/components/portfolio/ServicesTabs";
+import TechMarquee from "@/components/portfolio/TechMarquee";
 
 export default function Home() {
   return (
     <>
-      <Nav />
+      <PortfolioNav />
       <main>
-        <Hero />
-        <LogoMarquee />
-        <FasterThanTyping />
-        <HowItWorks />
-        <MakesItEasy />
-        <Privacy />
-        <Testimonials />
-        <Faq />
-        <StartFlowing />
+        <PortfolioHero />
+        <TechMarquee />
+        <FeaturedWork />
+        <ServicesTabs />
+        <ProjectsGrid />
+        <ExpertiseTrack />
+        <CareerTimeline />
+        <Products />
+        <About />
+        <ContactSection />
       </main>
-      <Footer />
+      <PortfolioFooter />
     </>
   );
 }

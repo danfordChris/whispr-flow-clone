@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { EB_Garamond, Figtree } from "next/font/google";
+import { profile } from "@/lib/portfolio";
 import "./globals.css";
 
 const figtree = Figtree({
@@ -18,9 +19,26 @@ const garamond = EB_Garamond({
 });
 
 export const metadata: Metadata = {
-  title: "Wispr Flow | Effortless Voice Dictation",
-  description:
-    "The voice-to-text AI that turns speech into clear, polished writing in every app.",
+  metadataBase: new URL(profile.site),
+  title: profile.seoTitle,
+  description: profile.seoDescription,
+  keywords: [...profile.keywords],
+  authors: [{ name: `${profile.firstName} ${profile.lastName}` }],
+  openGraph: {
+    type: "website",
+    siteName: `${profile.firstName} ${profile.lastName}`,
+    title: profile.seoTitle,
+    description: profile.seoDescription,
+    url: profile.site,
+  },
+  twitter: {
+    card: "summary_large_image",
+    site: "@Co24669",
+    creator: "@Co24669",
+    title: profile.seoTitle,
+    description: profile.seoDescription,
+  },
+  robots: { index: true, follow: true },
 };
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
