@@ -129,17 +129,6 @@ function ModulePanel({ p }: { p: number }) {
         </div>
 
         <div className="flex flex-wrap items-center gap-2">
-          {/* the walkthrough's position, in place of the port's waveform */}
-          <div className="flex h-[34px] items-center gap-2 rounded-full border border-lumen/25 bg-vast/70 px-3.5">
-            <span className="h-1.5 w-1.5 rounded-full bg-flare" />
-            <span className="font-mono text-[12px] text-lumen tabular-nums">
-              {String(active + 1).padStart(2, "0")}
-              <span className="text-lumen/40">
-                {" / "}
-                {String(MODULES.length).padStart(2, "0")}
-              </span>
-            </span>
-          </div>
           {featured.tech.slice(0, 4).map((t) => (
             <span
               key={t}
