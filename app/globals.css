@@ -32,6 +32,10 @@
   /* type */
   --font-body: var(--font-figtree), Arial, sans-serif;
   --font-display: var(--font-garamond), "Times New Roman", serif;
+  /* system stack — the terminal pill is the only mono on the page, so it
+     isn't worth a webfont download */
+  --font-mono: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas,
+    "Liberation Mono", monospace;
 
   /* section radii */
   --radius-section-xtiny: 1rem;

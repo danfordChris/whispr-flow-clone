@@ -1,7 +1,8 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { PathMarquee, RollText, Waveform } from "../primitives";
+import { PathMarquee, RollText } from "../primitives";
+import TerminalPill from "./TerminalPill";
 import { allTech, profile, socials } from "@/lib/portfolio";
 
 /* the hero curves, reused from the Wispr Flow port */
@@ -156,15 +157,9 @@ export default function PortfolioHero() {
         </div>
       </div>
 
-      {/* the "listening" pill from the port, reframed as a build indicator */}
+      {/* a live shell instead of the port's audio waveform */}
       <div className="relative z-10 mt-16 flex justify-center md:mt-24">
-        <div className="relative flex h-[74px] items-center gap-3 rounded-[26px] border-2 border-vast bg-lumen px-6">
-          <span className="h-2 w-2 rounded-full bg-flare" />
-          <Waveform height={30} bars={18} color="#1a1a1a" />
-          <span className="font-[family-name:var(--font-body)] text-[13px] font-medium text-dark-70">
-            building
-          </span>
-        </div>
+        <TerminalPill />
       </div>
     </section>
   );
