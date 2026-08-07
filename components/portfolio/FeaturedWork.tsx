@@ -1,7 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import { PathMarquee, Reveal, useScrollProgress, Waveform } from "../primitives";
+import { PathMarquee, Reveal, useScrollProgress } from "../primitives";
 import { ipfModules, projects, stats } from "@/lib/portfolio";
 
 const CURVE_STRAIGHT = "M0 44 H2000";
@@ -129,9 +129,16 @@ function ModulePanel({ p }: { p: number }) {
         </div>
 
         <div className="flex flex-wrap items-center gap-2">
-          <div className="flex h-[34px] items-center gap-2 rounded-full border border-lumen/25 bg-vast/70 px-3">
+          {/* the walkthrough's position, in place of the port's waveform */}
+          <div className="flex h-[34px] items-center gap-2 rounded-full border border-lumen/25 bg-vast/70 px-3.5">
             <span className="h-1.5 w-1.5 rounded-full bg-flare" />
-            <Waveform height={16} bars={12} color="#ffffeb" />
+            <span className="font-mono text-[12px] text-lumen tabular-nums">
+              {String(active + 1).padStart(2, "0")}
+              <span className="text-lumen/40">
+                {" / "}
+                {String(MODULES.length).padStart(2, "0")}
+              </span>
+            </span>
           </div>
           {featured.tech.slice(0, 4).map((t) => (
             <span

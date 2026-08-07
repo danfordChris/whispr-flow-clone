@@ -17,6 +17,44 @@ const COMMANDS = [
   "git push origin main",
 ];
 
+/**
+ * An idle shell prompt — a path, a `$` and a blinking block cursor, waiting
+ * for input. Used wherever the port left a decorative audio waveform.
+ */
+export function Prompt({
+  path = "~",
+  dark = false,
+  size = 14,
+}: {
+  path?: string;
+  dark?: boolean;
+  size?: number;
+}) {
+  return (
+    <span
+      className="inline-flex items-baseline gap-2 font-mono whitespace-nowrap"
+      style={{ fontSize: size }}
+      role="img"
+      aria-label="A waiting terminal prompt"
+    >
+      <span className={dark ? "text-lumen/50" : "text-dark-50"}>{path}</span>
+      <span
+        className={`font-semibold ${dark ? "text-lumen/70" : "text-fathom"}`}
+      >
+        $
+      </span>
+      <span
+        className="caret"
+        style={{
+          width: Math.round(size / 2),
+          height: Math.round(size * 1.05),
+          color: dark ? "#ffffeb" : "#1a1a1a",
+        }}
+      />
+    </span>
+  );
+}
+
 export default function TerminalPill() {
   const [i, setI] = useState(0);
   const [text, setText] = useState("");

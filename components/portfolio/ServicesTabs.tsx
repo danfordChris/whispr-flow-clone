@@ -1,7 +1,8 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import { Reveal, Waveform } from "../primitives";
+import { Reveal } from "../primitives";
+import { Prompt } from "./TerminalPill";
 import { services } from "@/lib/portfolio";
 
 /* a small illustrative stage per service, in the port's card language */
@@ -82,8 +83,8 @@ function Stage({ index, active }: { index: number; active: boolean }) {
   if (index === 3)
     return (
       <div className="flex h-full flex-col items-center justify-center gap-4">
-        <div className="flex h-[86px] w-[170px] items-center justify-center rounded-[28px] border-2 border-vast bg-lumen">
-          <Waveform height={34} bars={22} color="#1a1a1a" active={active} />
+        <div className="flex h-[86px] items-center justify-center rounded-[28px] border-2 border-vast bg-lumen px-7">
+          <Prompt path="~/contentlab" size={14} />
         </div>
         <div className="w-full max-w-[290px] space-y-2">
           {["Idea", "Draft", "Publish"].map((step, i) => (

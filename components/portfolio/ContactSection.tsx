@@ -2,7 +2,8 @@
 
 import Image from "next/image";
 import { useState } from "react";
-import { Reveal, RollText, Waveform } from "../primitives";
+import { Reveal, RollText } from "../primitives";
+import { Prompt } from "./TerminalPill";
 import { contact, profile, socials } from "@/lib/portfolio";
 
 type Errors = Partial<Record<"name" | "email" | "message", string>>;
@@ -181,8 +182,8 @@ export default function ContactSection() {
             </div>
 
             <div className="mt-12 flex justify-center">
-              <div className="flex h-[64px] w-[136px] items-center justify-center rounded-[22px] border-2 border-lumen/40">
-                <Waveform height={26} bars={20} color="#ffffeb" />
+              <div className="flex h-[64px] items-center justify-center rounded-[22px] border-2 border-lumen/40 px-7">
+                <Prompt path="~/danford" dark size={15} />
               </div>
             </div>
           </div>
