@@ -78,31 +78,28 @@ function ModulePanel({ p }: { p: number }) {
   );
 
   return (
-    /* one centred group per column — `justify-between` used to fling the
-       content to the card edges and leave a void down the middle */
     <div className="grid h-full grid-cols-[1fr_384px] items-center gap-8 p-9">
       {/* copy column */}
       <div className="flex flex-col gap-6">
         <div>
-          <p className="text-[12px] font-semibold tracking-[0.1em] text-lumen/45 uppercase">
+          <p className="text-[12px] font-semibold tracking-[0.1em] text-dark-50 uppercase">
             {featured.category.join(" + ")} · enterprise
           </p>
-          <h3 className="mt-2.5 font-[family-name:var(--font-display)] text-[40px] leading-[1] text-lumen">
+          <h3 className="mt-2.5 font-[family-name:var(--font-display)] text-[40px] leading-[1]">
             IPF OS
           </h3>
         </div>
 
-        {/* module switcher — sized to hold all five on one line */}
+        {/* module switcher — same chip language as the project filters */}
         <div className="flex flex-wrap gap-1.5">
           {MODULES.map((m, i) => (
             <span
               key={m.id}
-              className="rounded-full border px-2.5 py-1.5 text-[11.5px] font-semibold whitespace-nowrap transition-all duration-400"
-              style={{
-                borderColor: i === active ? "#ffffeb" : "#ffffeb33",
-                background: i === active ? "#ffffeb" : "transparent",
-                color: i === active ? "#1a1a1a" : "#ffffeb99",
-              }}
+              className={`rounded-full border-2 px-2.5 py-1 text-[11.5px] font-semibold whitespace-nowrap transition-colors duration-300 ${
+                i === active
+                  ? "border-vast bg-dawn text-vast"
+                  : "border-dark-15 text-dark-70"
+              }`}
             >
               {m.name}
             </span>
@@ -110,7 +107,7 @@ function ModulePanel({ p }: { p: number }) {
         </div>
 
         {/* active module, with a coral rule tying it to the chip above */}
-        <div className="relative min-h-[78px] rounded-xl border-l-2 border-flare bg-vast/35 py-3 pr-4 pl-4 backdrop-blur-sm">
+        <div className="relative min-h-[78px] rounded-xl border-l-[3px] border-flare bg-lumen-dark py-3 pr-4 pl-4">
           {MODULES.map((m, i) => (
             <div
               key={m.id}
@@ -121,19 +118,19 @@ function ModulePanel({ p }: { p: number }) {
                 inset: i === 0 ? undefined : "12px 16px",
               }}
             >
-              <p className="text-[15px] font-semibold text-lumen">{m.name}</p>
-              <p className="mt-1 text-[13px] leading-[1.45] text-lumen/70">
+              <p className="text-[15px] font-semibold">{m.name}</p>
+              <p className="mt-1 text-[13px] leading-[1.45] text-dark-70">
                 {m.detail}
               </p>
             </div>
           ))}
         </div>
 
-        <div className="flex flex-wrap items-center gap-1.5 border-t border-lumen/12 pt-5">
+        <div className="flex flex-wrap items-center gap-1.5 border-t border-dark-15 pt-5">
           {featured.tech.slice(0, 4).map((t) => (
             <span
               key={t}
-              className="rounded-full bg-lumen/10 px-2.5 py-1 text-[11px] font-semibold text-lumen/75"
+              className="rounded-full border border-dark-15 px-2.5 py-1 text-[11px] font-medium text-dark-70"
             >
               {t}
             </span>
@@ -171,10 +168,14 @@ export default function FeaturedWork() {
         <div ref={ref} className="relative hidden h-[340vh] md:block">
           <div className="sticky top-0 flex h-screen items-center">
             <div className="relative mx-auto h-[501px] w-full max-w-[1160px] overflow-hidden">
-              {/* left — the numbers, as one centred block rather than two
-                  stats pinned to opposite ends of a 501px card */}
-              <div className="absolute inset-y-0 left-0 z-10 flex w-[325px] flex-col justify-center gap-7 rounded-[40px] border-4 border-lumen/10 bg-fathom/60 p-9 backdrop-blur-[2px]">
-                <p className="text-[12px] font-semibold tracking-[0.1em] text-lumen/45 uppercase">
+              {/* Both cards are solid, bordered and hard-shadowed — the same
+                  language as every other card on the site. They used to be
+                  translucent fills with faint borders and backdrop blur,
+                  which read as a different design entirely. */}
+
+              {/* left — the numbers */}
+              <div className="absolute top-0 left-0 z-10 flex h-[495px] w-[325px] flex-col justify-center gap-7 rounded-[32px] border-2 border-vast bg-lumen-dark p-9 shadow-[6px_6px_0_0_#1a1a1a]">
+                <p className="text-[12px] font-semibold tracking-[0.1em] text-dark-50 uppercase">
                   At a glance
                 </p>
 
@@ -184,24 +185,23 @@ export default function FeaturedWork() {
                     { value: 2, label: "Platforms" },
                   ].map((s) => (
                     <div key={s.label} className="flex items-baseline gap-4">
-                      <span className="font-[family-name:var(--font-display)] text-[58px] leading-[0.8] text-lumen tabular-nums">
+                      <span className="font-[family-name:var(--font-display)] text-[58px] leading-[0.8] tabular-nums">
                         {s.value}
                       </span>
-                      <span className="text-[15px] font-semibold text-lumen/60">
+                      <span className="text-[15px] font-semibold text-dark-70">
                         {s.label}
                       </span>
                     </div>
                   ))}
                 </div>
 
-                <p className="border-t border-lumen/12 pt-5 text-[13px] leading-[1.45] text-lumen/50">
+                <p className="border-t border-dark-15 pt-5 text-[13px] leading-[1.45] text-dark-70">
                   Web and mobile, one codebase family
                 </p>
               </div>
 
               {/* right — the platform card */}
-              <div className="absolute inset-y-0 left-[325px] z-10 w-[835px] overflow-hidden rounded-[40px] bg-lumen/[0.06]">
-                <div className="absolute inset-0 bg-gradient-to-br from-fathom/60 to-vast/40" />
+              <div className="absolute top-0 left-[345px] z-10 h-[495px] w-[809px] overflow-hidden rounded-[32px] border-2 border-vast bg-lumen shadow-[6px_6px_0_0_#1a1a1a]">
                 <div
                   className="absolute inset-0 transition-opacity duration-300"
                   style={{
