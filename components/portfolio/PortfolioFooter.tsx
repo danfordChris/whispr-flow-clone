@@ -1,4 +1,4 @@
-import { FlowLogo } from "../primitives";
+import Logo from "./Logo";
 import { profile, products, services, socials } from "@/lib/portfolio";
 
 const NAV = [
@@ -118,7 +118,7 @@ export default function PortfolioFooter() {
 
         <div className="mt-20 flex flex-col-reverse items-start justify-between gap-6 border-t border-dark-15 pt-8 md:flex-row md:items-center">
           <div className="flex items-center gap-6">
-            <FlowLogo label="Danford" />
+            <Logo size={28} />
             <span className="text-[14px] text-dark-50">
               © {profile.firstName} {profile.lastName} {new Date().getFullYear()}
             </span>

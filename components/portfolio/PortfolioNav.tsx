@@ -1,7 +1,8 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { FlowLogo, RollText } from "../primitives";
+import { RollText } from "../primitives";
+import Logo from "./Logo";
 import { profile } from "@/lib/portfolio";
 
 const SECTIONS = [
@@ -45,7 +46,7 @@ export default function PortfolioNav() {
       >
         <div className="flex items-center gap-4 md:gap-7">
           <a href="#top" className="shrink-0">
-            <FlowLogo label="Danford" />
+            <Logo size={26} />
           </a>
 
           <div className="relative hidden items-center rounded-full bg-lumen-dark p-[2px] sm:flex">
