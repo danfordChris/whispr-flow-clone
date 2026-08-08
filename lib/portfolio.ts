@@ -106,7 +106,23 @@ export const expertise: Expertise[] = [
     id: "ai",
     title: "Mobile Engineering, GenAI & ML",
     body: "I work on cross-platform mobile apps with Flutter and also integrate AI capabilities where they add real business value, from automation to data-informed product experiences.",
-    stack: ["OpenAI", "pandas", "TensorFlow", "Python Libraries"],
+    /**
+     * The source portfolio listed only the four AI entries here, so the
+     * "Mobile Engineering" half of the title had nothing behind it — Flutter
+     * appeared under Full Stack instead. The mobile tools added here are the
+     * ones that actually appear across the projects: Flutter and Dart in six
+     * of them, React Native in MealGro, SQLite in IPF OS.
+     */
+    stack: [
+      "Flutter",
+      "Dart",
+      "React Native",
+      "SQLite",
+      "OpenAI",
+      "pandas",
+      "TensorFlow",
+      "Python Libraries",
+    ],
   },
 ];
 
