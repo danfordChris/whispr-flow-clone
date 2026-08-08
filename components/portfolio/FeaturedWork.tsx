@@ -4,8 +4,8 @@ import Image from "next/image";
 import { PathMarquee, Reveal, useScrollProgress } from "../primitives";
 import { ipfModules, projects, stats } from "@/lib/portfolio";
 
-const CURVE_FAST =
-  "M0 74.7977 L70.055 74.7977C253.23 74.7977 310.275 0.534007 467.005 0.797575C622.426 1.05894 621.28 74.7977 858.005 74.7977 L928 74.7977";
+/* baseline sits mid-box so ascenders and descenders both have room */
+const TICKER_LINE = "M0 36 H4000";
 
 const featured = projects.find((p) => p.featured)!;
 const TECH_TRAIL = featured.tech.join("  ·  ") + "  ·  ";
@@ -146,8 +146,6 @@ function ModulePanel({ p }: { p: number }) {
 
 export default function FeaturedWork() {
   const { ref, progress } = useScrollProgress<HTMLDivElement>();
-  const marqueeOut = range(progress, 0.18, 0.3);
-  const panelIn = range(progress, 0.22, 0.34);
 
   return (
     <section id="work" className="bg-vast px-4 pb-4">
@@ -166,7 +164,7 @@ export default function FeaturedWork() {
 
         {/* pinned track: stat card left, module walkthrough right */}
         <div ref={ref} className="relative hidden h-[340vh] md:block">
-          <div className="sticky top-0 flex h-screen items-center">
+          <div className="sticky top-0 flex h-screen flex-col items-center justify-center gap-8">
             <div className="relative mx-auto h-[501px] w-full max-w-[1160px] overflow-hidden">
               {/* Both cards are solid, bordered and hard-shadowed — the same
                   language as every other card on the site. They used to be
@@ -200,66 +198,59 @@ export default function FeaturedWork() {
                 </p>
               </div>
 
-              {/* right — the platform card */}
+              {/* right — the platform card. Rendered from the first frame:
+                  it used to fade in at 22% scroll, so arriving at the pinned
+                  section showed an empty card. */}
               <div className="absolute top-0 left-[345px] z-10 h-[495px] w-[809px] overflow-hidden rounded-[32px] border-2 border-vast bg-lumen shadow-[6px_6px_0_0_#1a1a1a]">
-                <div
-                  className="absolute inset-0 transition-opacity duration-300"
-                  style={{
-                    opacity: panelIn,
-                    pointerEvents: panelIn > 0.5 ? "auto" : "none",
-                  }}
-                >
-                  <ModulePanel p={progress} />
-                </div>
+                <ModulePanel p={progress} />
               </div>
+            </div>
 
-              {/* the screen-name marquee used to run at full opacity across
-                  the middle of both cards, cutting through the panel and the
-                  screenshots — it now fades out with the intro */}
+            {/* The marquee sat behind the cards — fine while they were
+                translucent, invisible once they were not. It runs as its own
+                band below them now.
 
-              {/* tech marquee on the bump curve */}
-              <div
-                className="pointer-events-none absolute top-[205px] left-[162px] transition-opacity duration-300"
-                style={{ opacity: 1 - marqueeOut }}
-              >
-                <PathMarquee
-                  id="pf-work-fast"
-                  d={CURVE_FAST}
-                  viewBox="0 0 928 76"
-                  width={1160}
-                  height={95}
-                  text={TECH_TRAIL}
-                  speed={62}
-                  fontSize={22}
-                  fontWeight={600}
-                  fill="#ffffeb"
-                />
-              </div>
+                On a straight path, not the bump curve: the curve was drawn to
+                weave between the cards, and standing alone it dived out of the
+                frame and clipped its own descenders. */}
+            <div className="mask-fade-x pointer-events-none w-full max-w-[1160px] overflow-hidden">
+              <PathMarquee
+                id="pf-work-ticker"
+                d={TICKER_LINE}
+                viewBox="0 0 928 60"
+                width={1160}
+                height={75}
+                text={TECH_TRAIL}
+                speed={48}
+                fontSize={22}
+                fontWeight={600}
+                fill="rgba(255,255,235,0.5)"
+              />
             </div>
           </div>
         </div>
 
         {/* mobile — the modules as a plain, readable list of screens */}
         <div className="mx-auto mt-12 max-w-[1160px] md:hidden">
-          <div className="rounded-[28px] border-2 border-lumen/15 bg-lumen/[0.06] p-6">
-            <p className="text-[12px] font-semibold tracking-[0.08em] text-lumen/50 uppercase">
+          <div className="rounded-[28px] border-2 border-vast bg-lumen-dark p-6 shadow-[6px_6px_0_0_#1a1a1a]">
+            <p className="text-[12px] font-semibold tracking-[0.08em] text-dark-50 uppercase">
               {featured.category.join(" + ")} · enterprise
             </p>
-            <h3 className="mt-2 font-[family-name:var(--font-display)] text-[34px] leading-[1] text-lumen">
+            <h3 className="mt-2 font-[family-name:var(--font-display)] text-[34px] leading-[1]">
               IPF OS
             </h3>
             <div className="mt-5 flex gap-8">
               <div>
-                <div className="font-[family-name:var(--font-display)] text-[34px] leading-none text-lumen">
+                <div className="font-[family-name:var(--font-display)] text-[34px] leading-none">
                   {MODULES.length}
                 </div>
-                <div className="text-[12px] text-lumen/60">modules</div>
+                <div className="text-[12px] text-dark-70">modules</div>
               </div>
               <div>
-                <div className="font-[family-name:var(--font-display)] text-[34px] leading-none text-lumen">
+                <div className="font-[family-name:var(--font-display)] text-[34px] leading-none">
                   2
                 </div>
-                <div className="text-[12px] text-lumen/60">platforms</div>
+                <div className="text-[12px] text-dark-70">platforms</div>
               </div>
             </div>
           </div>
