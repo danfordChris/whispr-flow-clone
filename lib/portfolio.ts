@@ -257,7 +257,8 @@ export type Project = {
   link?: string;
   category: Category[];
   /** shots shown in the detail view */
-  shots: { id: string; title: string }[];
+  /** every screen for this project — drives the gallery */
+  shots: { id: string; title: string; src: string }[];
   featured?: boolean;
   /** card image — real screenshots recovered from the previous portfolio */
   image: string;
@@ -322,16 +323,16 @@ export const projects: Project[] = [
     category: ["web", "mobile"],
     featured: true,
     shots: [
-      { id: "1", title: "Web Dashboard" },
-      { id: "2", title: "Mobile Dashboard" },
-      { id: "3", title: "Meals Mobile" },
-      { id: "4", title: "Meals Web" },
-      { id: "5", title: "Tasks Mobile" },
-      { id: "6", title: "Tasks Web" },
-      { id: "7", title: "PMO Mobile" },
-      { id: "8", title: "PMO Web" },
-      { id: "9", title: "User Management Mobile" },
-      { id: "10", title: "User Management Web" },
+      { id: "1", title: "Web Dashboard", src: "/img/work/ipf-os/dashboard-web.jpg" },
+      { id: "2", title: "Mobile Dashboard", src: "/img/work/ipf-os/dashboard-mobile.png" },
+      { id: "3", title: "Meals Mobile", src: "/img/work/ipf-os/meals-mobile.png" },
+      { id: "4", title: "Meals Web", src: "/img/work/ipf-os/meals-web.jpg" },
+      { id: "5", title: "Tasks Mobile", src: "/img/work/ipf-os/tasks-mobile.png" },
+      { id: "6", title: "Tasks Web", src: "/img/work/ipf-os/tasks-web.jpg" },
+      { id: "7", title: "PMO Mobile", src: "/img/work/ipf-os/pmo-mobile.png" },
+      { id: "8", title: "PMO Web", src: "/img/work/ipf-os/pmo-web.jpg" },
+      { id: "9", title: "User Management Mobile", src: "/img/work/ipf-os/users-mobile.png" },
+      { id: "10", title: "User Management Web", src: "/img/work/ipf-os/users-web.jpg" },
     ],
   },
   {
@@ -343,7 +344,7 @@ export const projects: Project[] = [
     tech: ["Flutter", "Dart", "Firebase", "REST API"],
     link: "https://play.google.com/store/apps/details?id=tz.bantu.soko.android&pcampaignid=web_share",
     category: ["mobile"],
-    shots: [{ id: "1", title: "Main Screen" }],
+    shots: [{ id: "1", title: "Main Screen", src: "/img/work/bantu-soko.jpg" }],
   },
   {
     id: "mealgro",
@@ -355,11 +356,11 @@ export const projects: Project[] = [
     link: "https://drive.google.com/file/d/1uIJ9cKkGrLQGfLyRvkH__FP1HSAd1WMJ/view?usp=drive_link",
     category: ["mobile"],
     shots: [
-      { id: "1", title: "Splash Screen" },
-      { id: "2", title: "Feeds" },
-      { id: "3", title: "Filters" },
-      { id: "4", title: "Notifications" },
-      { id: "5", title: "Settings" },
+      { id: "1", title: "Splash Screen", src: "/img/work/mealgro/splash.jpg" },
+      { id: "2", title: "Feeds", src: "/img/work/mealgro/feeds.jpg" },
+      { id: "3", title: "Filters", src: "/img/work/mealgro/filters.jpg" },
+      { id: "4", title: "Notifications", src: "/img/work/mealgro/notifications.png" },
+      { id: "5", title: "Settings", src: "/img/work/mealgro/settings.png" },
     ],
   },
   {
@@ -371,7 +372,7 @@ export const projects: Project[] = [
     tech: ["Flutter", "Dart", "Firebase", "Google Maps API"],
     link: "https://drive.google.com/file/d/1nMWR8w6lo4q1DkGNT3nwoGUBaWEirjPc/view?usp=drive_link",
     category: ["mobile"],
-    shots: [{ id: "1", title: "Delivery Tracking" }],
+    shots: [{ id: "1", title: "Delivery Tracking", src: "/img/work/tumafast.jpg" }],
   },
   {
     id: "ocean-ecommerce",
@@ -382,7 +383,7 @@ export const projects: Project[] = [
     tech: ["React", "Node.js", "PostgreSQL", "Stripe"],
     link: "https://play.google.com/store/apps/details?id=com.oceangroup.ocean&pcampaignid=web_share",
     category: ["web"],
-    shots: [{ id: "1", title: "Store" }],
+    shots: [{ id: "1", title: "Store", src: "/img/work/ocean-ecommerce.jpg" }],
   },
   {
     id: "changisha",
@@ -393,7 +394,7 @@ export const projects: Project[] = [
     tech: ["React", "Firebase", "Stripe", "Node.js"],
     link: "https://drive.google.com/file/d/1zeVK1_V666EJtbpkTck7kTSISwKu3Ocd/view?usp=drive_link",
     category: ["web"],
-    shots: [{ id: "1", title: "Campaign View" }],
+    shots: [{ id: "1", title: "Campaign View", src: "/img/work/changisha.jpg" }],
   },
   {
     id: "code-challenge",
@@ -403,7 +404,7 @@ export const projects: Project[] = [
       "A Trello-like application that allows users to create boards, lists, and cards to organize their tasks and projects. The app provides a user-friendly interface for managing and collaborating on tasks, making it easier for teams to stay organized and productive.",
     tech: ["React", "Node.js", "MongoDB", "REST API"],
     category: ["web"],
-    shots: [{ id: "1", title: "Board View" }],
+    shots: [{ id: "1", title: "Board View", src: "/img/work/code-challenge.png" }],
   },
   {
     id: "nasafiri",
@@ -413,7 +414,7 @@ export const projects: Project[] = [
       "A web application aimed at reducing the hassle of transport booking, saving time for passengers, and offering insurance options.",
     tech: ["React", "Node.js", "Google Maps API", "Payment Gateway"],
     category: ["web"],
-    shots: [{ id: "1", title: "Booking System" }],
+    shots: [{ id: "1", title: "Booking System", src: "/img/work/nasafiri.png" }],
   },
   {
     id: "cypherz",
@@ -423,7 +424,7 @@ export const projects: Project[] = [
       "An agriculture platform that eliminates the middleman in agricultural products, linking sellers and buyers directly.",
     tech: ["React", "Node.js", "PostgreSQL", "AWS"],
     category: ["web"],
-    shots: [{ id: "1", title: "Marketplace" }],
+    shots: [{ id: "1", title: "Marketplace", src: "/img/work/cypherz.jpg" }],
   },
   {
     id: "stock-management",
@@ -433,7 +434,7 @@ export const projects: Project[] = [
       "A mobile application designed to manage inventory, notify the owner about stock levels, and suggest products to increase annual gains.",
     tech: ["Flutter", "Dart", "Firebase", "Notifications"],
     category: ["mobile"],
-    shots: [{ id: "1", title: "Inventory Dashboard" }],
+    shots: [{ id: "1", title: "Inventory Dashboard", src: "/img/work/stock-management.jpg" }],
   },
   {
     id: "vikoba-plus",
@@ -443,7 +444,7 @@ export const projects: Project[] = [
       "A mobile app that simplifies money management for small-scale groups (Vikoba), making it easy to track expenses and income.",
     tech: ["Flutter", "Dart", "Firebase", "Charts"],
     category: ["mobile"],
-    shots: [{ id: "1", title: "Finance Dashboard" }],
+    shots: [{ id: "1", title: "Finance Dashboard", src: "/img/work/vikoba-plus.jpg" }],
   },
   {
     id: "tetris-game",
@@ -454,7 +455,7 @@ export const projects: Project[] = [
     tech: ["Flutter", "Dart", "Game Development"],
     link: "https://drive.google.com/file/d/1nMWR8w6lo4q1DkGNT3nwoGUBaWEirjPc/view?usp=drive_link",
     category: ["game"],
-    shots: [{ id: "1", title: "Gameplay" }],
+    shots: [{ id: "1", title: "Gameplay", src: "/img/work/tetris-game.jpg" }],
   },
 ];
 

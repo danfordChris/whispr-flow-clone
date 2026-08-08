@@ -3,7 +3,8 @@
 import Image from "next/image";
 import { useMemo, useState } from "react";
 import { Reveal } from "../primitives";
-import { projects, type Category } from "@/lib/portfolio";
+import Gallery from "./Gallery";
+import { projects, type Category, type Project } from "@/lib/portfolio";
 
 const FILTERS: { id: Category | "all"; label: string }[] = [
   { id: "all", label: "All" },
@@ -15,6 +16,9 @@ const FILTERS: { id: Category | "all"; label: string }[] = [
 export default function ProjectsGrid() {
   const [filter, setFilter] = useState<Category | "all">("all");
   const [open, setOpen] = useState<string | null>(null);
+  const [gallery, setGallery] = useState<{ project: Project; at: number } | null>(
+    null,
+  );
 
   const shown = useMemo(
     () =>
@@ -79,14 +83,22 @@ export default function ProjectsGrid() {
                     boxShadow: isOpen ? "6px 6px 0 0 #1a1a1a" : undefined,
                   }}
                 >
-                  <div className="relative aspect-[8/5] overflow-hidden border-b-2 border-vast">
+                  <button
+                    type="button"
+                    onClick={() => setGallery({ project: p, at: 0 })}
+                    aria-label={`View ${p.title} screens`}
+                    className="group/img relative block aspect-[8/5] w-full cursor-zoom-in overflow-hidden border-b-2 border-vast"
+                  >
                     <Image
                       src={p.image}
                       alt={p.title}
                       fill
                       sizes="(min-width:1024px) 380px, (min-width:768px) 50vw, 100vw"
-                      className="object-cover"
+                      className="object-cover transition-transform duration-500 group-hover/img:scale-[1.03]"
                     />
+                    <span className="absolute right-3 bottom-3 rounded-full border-2 border-vast bg-lumen px-2.5 py-1 text-[11px] font-semibold opacity-0 transition-opacity duration-300 group-hover/img:opacity-100">
+                      {p.shots.length > 1 ? `${p.shots.length} screens` : "View"}
+                    </span>
                     <div className="absolute top-3 left-3 flex gap-1.5">
                       {p.category.map((c) => (
                         <span
@@ -102,7 +114,7 @@ export default function ProjectsGrid() {
                         Featured
                       </span>
                     )}
-                  </div>
+                  </button>
 
                   <div className="flex flex-1 flex-col p-6">
                     <h3 className="font-[family-name:var(--font-display)] text-[26px] leading-[1.1]">
@@ -135,12 +147,17 @@ export default function ProjectsGrid() {
                           Screens
                         </p>
                         <ul className="mt-2 flex flex-wrap gap-1.5">
-                          {p.shots.map((s) => (
-                            <li
-                              key={s.id}
-                              className="rounded-md bg-lumen-dark px-2 py-1 text-[12px]"
-                            >
-                              {s.title}
+                          {p.shots.map((s, si) => (
+                            <li key={s.id}>
+                              <button
+                                type="button"
+                                onClick={() =>
+                                  setGallery({ project: p, at: si })
+                                }
+                                className="rounded-md bg-lumen-dark px-2 py-1 text-[12px] transition-colors hover:bg-dawn"
+                              >
+                                {s.title}
+                              </button>
                             </li>
                           ))}
                         </ul>
@@ -185,6 +202,14 @@ export default function ProjectsGrid() {
           })}
         </div>
       </div>
+
+      {gallery && (
+        <Gallery
+          project={gallery.project}
+          startAt={gallery.at}
+          onClose={() => setGallery(null)}
+        />
+      )}
     </section>
   );
 }
