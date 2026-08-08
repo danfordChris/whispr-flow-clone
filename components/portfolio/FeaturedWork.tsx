@@ -4,8 +4,8 @@ import Image from "next/image";
 import { PathMarquee, Reveal, useScrollProgress } from "../primitives";
 import { ipfModules, projects, stats } from "@/lib/portfolio";
 
-/* baseline sits mid-box so ascenders and descenders both have room */
-const TICKER_LINE = "M0 36 H4000";
+const CURVE_FAST =
+  "M0 74.7977 L70.055 74.7977C253.23 74.7977 310.275 0.534007 467.005 0.797575C622.426 1.05894 621.28 74.7977 858.005 74.7977 L928 74.7977";
 
 const featured = projects.find((p) => p.featured)!;
 const TECH_TRAIL = featured.tech.join("  ·  ") + "  ·  ";
@@ -210,21 +210,23 @@ export default function FeaturedWork() {
                 translucent, invisible once they were not. It runs as its own
                 band below them now.
 
-                On a straight path, not the bump curve: the curve was drawn to
-                weave between the cards, and standing alone it dived out of the
-                frame and clipped its own descenders. */}
+                It was also clipping its own text. The curve runs y 0.5..74.8
+                inside a 76-unit box, so the ascenders at its peak sat above the
+                frame and the descenders at its trough fell below it. Padding
+                the viewBox 28 units top and bottom — at a matching height, so
+                the scale stays uniform — leaves ~9px either side. */}
             <div className="mask-fade-x pointer-events-none w-full max-w-[1160px] overflow-hidden">
               <PathMarquee
-                id="pf-work-ticker"
-                d={TICKER_LINE}
-                viewBox="0 0 928 60"
+                id="pf-work-fast"
+                d={CURVE_FAST}
+                viewBox="0 -28 928 116"
                 width={1160}
-                height={75}
+                height={145}
                 text={TECH_TRAIL}
-                speed={48}
+                speed={62}
                 fontSize={22}
                 fontWeight={600}
-                fill="rgba(255,255,235,0.5)"
+                fill="rgba(255,255,235,0.6)"
               />
             </div>
           </div>
