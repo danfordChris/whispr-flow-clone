@@ -85,14 +85,7 @@ export default function PortfolioFooter() {
                     </a>
                   </li>
                 ))}
-                <li>
-                  <a
-                    href="/wispr"
-                    className="text-[16px] leading-[1.35] font-medium text-vast transition-opacity hover:opacity-60"
-                  >
-                    Wispr Flow port
-                  </a>
-                </li>
+                {/* the Wispr port is local-only — see app/wispr/page.tsx */}
               </ul>
             </div>
 
