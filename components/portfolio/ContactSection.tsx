@@ -43,9 +43,9 @@ export default function ContactSection() {
     "w-full rounded-xl border-2 border-lumen/25 bg-vast/30 px-4 py-3 text-[15px] text-lumen placeholder:text-lumen/40 outline-none transition-colors focus:border-lumen";
 
   return (
-    <section id="contact" className="bg-lumen">
+    <section id="contact" className="bg-lumen pt-16 md:pt-24">
       <Reveal>
-        <div className="rounded-section relative overflow-hidden bg-fathom px-5 pt-24 pb-16 text-lumen md:pt-[100px]">
+        <div className="rounded-section relative overflow-hidden bg-vast px-5 pt-24 pb-16 text-lumen md:pt-[100px]">
           <Image
             src="/img/cta-bg.jpg"
             alt=""
@@ -54,12 +54,12 @@ export default function ContactSection() {
             className="object-cover opacity-25"
           />
           <div
-            className="absolute inset-0 bg-gradient-to-b from-fathom/85 via-fathom/75 to-fathom/95"
+            className="absolute inset-0 bg-gradient-to-b from-vast/85 via-vast/75 to-vast/95"
             aria-hidden="true"
           />
           <div
-            className="pointer-events-none absolute top-1/2 left-1/2 h-[520px] w-[520px] -translate-x-1/2 -translate-y-1/2 rounded-full opacity-25 blur-3xl"
-            style={{ background: "#ffa946" }}
+            className="pointer-events-none absolute top-1/2 left-1/2 h-[520px] w-[520px] -translate-x-1/2 -translate-y-1/2 rounded-full opacity-20 blur-3xl"
+            style={{ background: "#ffffeb" }}
             aria-hidden="true"
           />
 
@@ -96,7 +96,7 @@ export default function ContactSection() {
                     aria-invalid={!!errors.name}
                   />
                   {errors.name && (
-                    <p className="mt-1.5 text-[12px] text-glow">{errors.name}</p>
+                    <p className="mt-1.5 text-[12px] font-bold text-lumen underline underline-offset-2">{errors.name}</p>
                   )}
                 </div>
 
@@ -116,7 +116,7 @@ export default function ContactSection() {
                     aria-invalid={!!errors.email}
                   />
                   {errors.email && (
-                    <p className="mt-1.5 text-[12px] text-glow">{errors.email}</p>
+                    <p className="mt-1.5 text-[12px] font-bold text-lumen underline underline-offset-2">{errors.email}</p>
                   )}
                 </div>
               </div>
@@ -138,7 +138,7 @@ export default function ContactSection() {
                   aria-invalid={!!errors.message}
                 />
                 {errors.message && (
-                  <p className="mt-1.5 text-[12px] text-glow">
+                  <p className="mt-1.5 text-[12px] font-bold text-lumen underline underline-offset-2">
                     {errors.message}
                   </p>
                 )}
@@ -159,7 +159,7 @@ export default function ContactSection() {
                 {sent && (
                   <span
                     role="status"
-                    className="rounded-full bg-success px-3 py-1.5 text-[12px] font-semibold text-vast"
+                    className="rounded-full bg-lumen px-3 py-1.5 text-[12px] font-semibold text-vast"
                   >
                     Opening your mail app…
                   </span>

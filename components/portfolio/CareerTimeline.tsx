@@ -25,7 +25,7 @@ export default function CareerTimeline() {
           <div className="mx-auto max-w-[960px] rounded-[32px] bg-lumen-dark p-4">
             <div className="grid gap-2 md:grid-cols-[1fr_1fr]">
               {/* roles — dark teal panel */}
-              <div className="thin-scroll max-h-[460px] overflow-y-auto rounded-[16px] bg-fathom px-3 pt-7 pb-3">
+              <div className="thin-scroll max-h-[460px] overflow-y-auto rounded-[16px] bg-vast px-3 pt-7 pb-3">
                 <p className="mb-4 px-3 font-[family-name:var(--font-display)] text-[20px] leading-none text-lumen">
                   Roles
                 </p>
@@ -69,7 +69,7 @@ export default function CareerTimeline() {
                                 key={k}
                                 className="flex gap-2 text-[13px] leading-[1.5] text-lumen/70"
                               >
-                                <span className="mt-[7px] h-1 w-1 shrink-0 rounded-full bg-flare" />
+                                <span className="mt-[7px] h-1 w-1 shrink-0 rounded-full bg-lumen/50" />
                                 {pt}
                               </li>
                             ))}
@@ -101,7 +101,7 @@ export default function CareerTimeline() {
                       key={k}
                       className="flex gap-2.5 text-[15px] leading-[1.55] text-dark-70"
                     >
-                      <span className="mt-[9px] h-1.5 w-1.5 shrink-0 rounded-full bg-flare" />
+                      <span className="mt-[9px] h-1.5 w-1.5 shrink-0 rounded-full bg-vast" />
                       {pt}
                     </li>
                   ))}

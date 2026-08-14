@@ -28,9 +28,9 @@ function ModuleShots({ active }: { active: number }) {
         {/* browser */}
         <div className="overflow-hidden rounded-[14px] border-2 border-vast bg-vast shadow-[0_20px_50px_-24px_#000000cc]">
           <div className="flex h-[26px] items-center gap-1.5 border-b-2 border-vast bg-lumen-dark px-2.5">
-            <span className="h-2 w-2 rounded-full bg-flare" />
-            <span className="h-2 w-2 rounded-full bg-glow" />
-            <span className="h-2 w-2 rounded-full bg-success" />
+            <span className="h-2 w-2 rounded-full bg-vast" />
+            <span className="h-2 w-2 rounded-full bg-stone" />
+            <span className="h-2 w-2 rounded-full bg-fog" />
             <span className="ml-1.5 truncate text-[10px] font-medium text-dark-70">
               ipf-os · {MODULES[active].name.toLowerCase()}
             </span>
@@ -97,7 +97,7 @@ function ModulePanel({ p }: { p: number }) {
               key={m.id}
               className={`rounded-full border-2 px-2.5 py-1 text-[11.5px] font-semibold whitespace-nowrap transition-colors duration-300 ${
                 i === active
-                  ? "border-vast bg-dawn text-vast"
+                  ? "border-vast bg-vast text-lumen"
                   : "border-dark-15 text-dark-70"
               }`}
             >
@@ -107,7 +107,7 @@ function ModulePanel({ p }: { p: number }) {
         </div>
 
         {/* active module, with a coral rule tying it to the chip above */}
-        <div className="relative min-h-[78px] rounded-xl border-l-[3px] border-flare bg-lumen-dark py-3 pr-4 pl-4">
+        <div className="relative min-h-[78px] rounded-xl border-l-[3px] border-vast bg-lumen-dark py-3 pr-4 pl-4">
           {MODULES.map((m, i) => (
             <div
               key={m.id}
@@ -149,7 +149,7 @@ export default function FeaturedWork() {
 
   return (
     <section id="work" className="bg-vast px-4 pb-4">
-      <div className="rounded-section bg-fathom px-5 pt-24 pb-4 md:px-10 md:pt-28">
+      <div className="rounded-section bg-vast px-5 pt-24 pb-4 md:px-10 md:pt-28">
         <div className="mx-auto max-w-[1160px]">
           <Reveal className="text-center text-lumen">
             <p className="eyebrow text-lumen/60">Featured work</p>

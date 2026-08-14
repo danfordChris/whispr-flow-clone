@@ -375,6 +375,24 @@ export const projects: Project[] = [
     shots: [{ id: "1", title: "Delivery Tracking", src: "/img/work/tumafast.jpg" }],
   },
   {
+    id: "notify-africa",
+    image: "/img/work/notify-africa/dashboard.png",
+    title: "Notify Africa",
+    description:
+      "A messaging app for reaching contacts at scale — quick-send, contact groups, message history, and a dashboard for delivery insight, wrapped in a lightweight mobile experience.",
+    tech: ["Flutter", "Dart", "Firebase", "REST API"],
+    category: ["mobile"],
+    shots: [
+      { id: "1", title: "Splash", src: "/img/work/notify-africa/splash-screen.png" },
+      { id: "2", title: "Sign In", src: "/img/work/notify-africa/sign-in.png" },
+      { id: "3", title: "Auth", src: "/img/work/notify-africa/auth-screen.png" },
+      { id: "4", title: "Dashboard", src: "/img/work/notify-africa/dashboard.png" },
+      { id: "5", title: "Quick Send", src: "/img/work/notify-africa/quick-send.png" },
+      { id: "6", title: "Contacts", src: "/img/work/notify-africa/contacts.png" },
+      { id: "7", title: "Messages", src: "/img/work/notify-africa/messages.png" },
+    ],
+  },
+  {
     id: "ocean-ecommerce",
     image: "/img/work/ocean-ecommerce.jpg",
     title: "Ocean E-commerce",

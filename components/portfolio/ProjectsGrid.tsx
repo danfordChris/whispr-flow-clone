@@ -58,7 +58,7 @@ export default function ProjectsGrid() {
                 aria-pressed={on}
                 className={`rounded-full border-2 px-5 py-2 text-[15px] font-semibold transition-all duration-300 ${
                   on
-                    ? "border-vast bg-dawn"
+                    ? "border-vast bg-vast text-lumen"
                     : "border-dark-15 text-dark-70 hover:border-vast hover:text-vast"
                 }`}
               >
@@ -110,7 +110,7 @@ export default function ProjectsGrid() {
                       ))}
                     </div>
                     {p.featured && (
-                      <span className="absolute top-3 right-3 rounded-full border border-vast bg-glow px-2.5 py-1 text-[11px] font-semibold">
+                      <span className="absolute top-3 right-3 rounded-full border border-vast bg-vast px-2.5 py-1 text-[11px] font-semibold text-lumen">
                         Featured
                       </span>
                     )}
@@ -154,7 +154,7 @@ export default function ProjectsGrid() {
                                 onClick={() =>
                                   setGallery({ project: p, at: si })
                                 }
-                                className="rounded-md bg-lumen-dark px-2 py-1 text-[12px] transition-colors hover:bg-dawn"
+                                className="rounded-md bg-lumen-dark px-2 py-1 text-[12px] transition-colors hover:bg-vast hover:text-lumen"
                               >
                                 {s.title}
                               </button>
@@ -189,7 +189,7 @@ export default function ProjectsGrid() {
                           href={p.link}
                           target="_blank"
                           rel="noreferrer"
-                          className="inline-flex items-center gap-1.5 border-b-2 border-flare pb-0.5 text-[14px] font-semibold text-flare transition-opacity hover:opacity-70"
+                          className="inline-flex items-center gap-1.5 border-b-2 border-vast pb-0.5 text-[14px] font-semibold text-vast transition-opacity hover:opacity-70"
                         >
                           Visit <span aria-hidden="true">↗</span>
                         </a>

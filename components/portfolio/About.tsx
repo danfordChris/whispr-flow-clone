@@ -238,7 +238,9 @@ const CARDS: Card[] = [
     y: 1420,
     w: 380,
     rotate: 1.5,
-    drift: -700,
+    /* Increased from -700 so the card's final resting spot leaves room
+       for the Instagram row above About's sticky-container clip line. */
+    drift: -920,
     body: (
       <>
         <p className="mb-4 text-[12px] font-semibold tracking-[0.08em] uppercase opacity-60">

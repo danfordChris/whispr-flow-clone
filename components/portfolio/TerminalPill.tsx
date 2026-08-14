@@ -39,7 +39,7 @@ export function Prompt({
     >
       <span className={dark ? "text-lumen/50" : "text-dark-50"}>{path}</span>
       <span
-        className={`font-semibold ${dark ? "text-lumen/70" : "text-fathom"}`}
+        className={`font-semibold ${dark ? "text-lumen/70" : "text-vast"}`}
       >
         $
       </span>
@@ -100,7 +100,7 @@ export default function TerminalPill() {
      
       <span className="flex items-baseline gap-2 font-mono text-[14px] whitespace-nowrap">
         <span className="text-dark-50 select-none">~/danford</span>
-        <span className="font-semibold text-fathom select-none">$</span>
+        <span className="font-semibold text-vast select-none">$</span>
         {/* min-width keeps the pill from resizing as the command types */}
         <span className="inline-block min-w-[228px] text-vast">
           {text}

@@ -26,8 +26,8 @@ function StackCard({ stack, active }: { stack: string[]; active: boolean }) {
             className="rounded-full border px-2.5 py-1 text-[12px] font-medium transition-all duration-300"
             style={{
               borderColor: i === lit && active ? "#1a1a1a" : "#1a1a1a26",
-              background: i === lit && active ? "#f0d7ff" : "transparent",
-              color: i === lit && active ? "#1a1a1a" : "#1a1a1ab3",
+              background: i === lit && active ? "#1a1a1a" : "transparent",
+              color: i === lit && active ? "#ffffeb" : "#1a1a1ab3",
             }}
           >
             {t}
@@ -119,7 +119,7 @@ export default function ExpertiseTrack() {
                   <StackCard stack={e.stack} active={i === active} />
                 </div>
 
-                <span className="font-[family-name:var(--font-display)] text-[20px] text-flare">
+                <span className="font-[family-name:var(--font-display)] text-[20px] italic text-vast">
                   0{i + 1}
                 </span>
                 <h3 className="mt-2 font-[family-name:var(--font-display)] text-[clamp(2rem,3.4vw,3rem)] leading-[0.95] font-normal">

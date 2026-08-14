@@ -16,6 +16,15 @@
   --color-pulse: #7f1c34;
   --color-success: #cef5ca;
 
+  /* DC monochrome ramp — extends Wispr's neutrals so the portfolio can
+     stay ink-and-paper on cream ground while /wispr keeps its palette. */
+  --color-paper: #ffffff;
+  --color-bone: #f2f2ec;
+  --color-fog: #d6d6d1;
+  --color-stone: #8a8a86;
+  --color-slate: #3a3a38;
+  --color-void: #000000;
+
   /* alpha ramps */
   --color-dark-10: #1a1a1a1a;
   --color-dark-15: #1a1a1a26;

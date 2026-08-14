@@ -66,7 +66,7 @@ function Stage({ index, active }: { index: number; active: boolean }) {
           </p>
         </div>
         <div
-          className={`${common} rounded-2xl border-2 border-vast bg-dawn p-4`}
+          className={`${common} rounded-2xl border-2 border-vast bg-vast p-4 text-lumen`}
           style={{
             opacity: active ? 1 : 0.3,
             transform: `translateY(${active ? 0 : 12}px)`,
@@ -83,7 +83,7 @@ function Stage({ index, active }: { index: number; active: boolean }) {
   if (index === 3)
     return (
       <div className="flex h-full flex-col items-center justify-center gap-4">
-        <div className="flex h-[86px] items-center justify-center rounded-[28px] border-2 border-vast bg-lumen px-7">
+        <div className="flex h-[86px] items-center justify-center bg-lumen px-7">
           <Prompt path="~/contentlab" size={14} />
         </div>
         <div className="w-full max-w-[290px] space-y-2">
@@ -96,7 +96,7 @@ function Stage({ index, active }: { index: number; active: boolean }) {
                 transitionDelay: `${i * 110}ms`,
               }}
             >
-              <span className="h-1.5 w-1.5 rounded-full bg-flare" />
+              <span className="h-1.5 w-1.5 rounded-full bg-vast" />
               {step}
             </div>
           ))}
@@ -115,7 +115,7 @@ function Stage({ index, active }: { index: number; active: boolean }) {
             transitionDelay: `${i * 100}ms`,
           }}
         >
-          <span className="flex h-8 w-8 items-center justify-center rounded-full border-2 border-vast bg-success text-[12px] font-bold">
+          <span className="flex h-8 w-8 items-center justify-center rounded-full border-2 border-vast bg-vast text-lumen text-[12px] font-bold">
             ✓
           </span>
           <span className="h-[2px] flex-1 bg-vast/20" />
@@ -185,7 +185,7 @@ export default function ServicesTabs() {
             <div className="flex gap-5">
               <div className="relative hidden w-[5px] shrink-0 self-stretch rounded-[16px] bg-lumen-dark md:block">
                 <span
-                  className="absolute left-0 h-[32px] w-[5px] rounded-[16px] bg-flare transition-all duration-500 [transition-timing-function:cubic-bezier(0.16,1,0.3,1)]"
+                  className="absolute left-0 h-[32px] w-[5px] rounded-[16px] bg-vast transition-all duration-500 [transition-timing-function:cubic-bezier(0.16,1,0.3,1)]"
                   style={{ top: `${index * 35 + 1.5}px` }}
                 />
               </div>
