@@ -248,6 +248,63 @@ body {
 .marquee-paused {
   animation-play-state: paused;
 }
+@keyframes signature-drift {
+  0%,
+  100% {
+    transform: translate3d(0, 0, 0) rotate(-2deg);
+  }
+  50% {
+    transform: translate3d(0, -8px, 0) rotate(-1deg);
+  }
+}
+.signature-drift {
+  transform-origin: 50% 60%;
+  transform-box: fill-box;
+  animation: signature-drift 9s ease-in-out infinite;
+}
+@media (prefers-reduced-motion: reduce) {
+  .signature-drift {
+    animation: none;
+    transform: rotate(-2deg);
+    transform-box: fill-box;
+    transform-origin: 50% 60%;
+  }
+}
+
+/* ------------------------------------------------------------------
+   Responsive section radii
+   Mobile keeps a subtle 24px curve; the dramatic 80px look is reserved
+   for large screens where the section actually has the width to carry it.
+   ------------------------------------------------------------------ */
+.rounded-section,
+.rounded-section-t {
+  --_r: 24px;
+}
+@media (min-width: 640px) {
+  .rounded-section,
+  .rounded-section-t {
+    --_r: 32px;
+  }
+}
+@media (min-width: 768px) {
+  .rounded-section,
+  .rounded-section-t {
+    --_r: 48px;
+  }
+}
+@media (min-width: 1024px) {
+  .rounded-section,
+  .rounded-section-t {
+    --_r: 80px;
+  }
+}
+.rounded-section {
+  border-radius: var(--_r);
+}
+.rounded-section-t {
+  border-top-left-radius: var(--_r);
+  border-top-right-radius: var(--_r);
+}
 .mask-fade-y {
   -webkit-mask-image: linear-gradient(
     to bottom,

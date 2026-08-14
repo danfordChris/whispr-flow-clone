@@ -7,8 +7,7 @@ export default function StartFlowing() {
   return (
     <section className="bg-lumen">
       <Reveal>
-        {/* full-bleed on the live site, 80px radius on all corners */}
-        <div className="relative overflow-hidden rounded-[80px] bg-fathom px-5 pt-24 pb-8 text-center text-lumen md:pt-[100px]">
+        <div className="rounded-section relative overflow-hidden bg-fathom px-5 pt-24 pb-8 text-center text-lumen md:pt-[100px]">
           {/* full-bleed backdrop, as on the live site */}
           <Image
             src="/img/cta-bg.jpg"

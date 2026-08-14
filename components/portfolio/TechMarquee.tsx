@@ -8,7 +8,7 @@ export default function TechMarquee() {
   const rows = [allTech.slice(0, half), allTech.slice(half)];
 
   return (
-    <section className="rounded-t-[80px] bg-vast pt-[104px] pb-20 text-lumen">
+    <section className="rounded-section-t bg-vast pt-[104px] pb-20 text-lumen">
       <p className="eyebrow mb-14 text-center text-lumen">
         Tools I build with
       </p>

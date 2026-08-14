@@ -109,7 +109,37 @@ export default function PortfolioFooter() {
           </div>
         </div>
 
-        <div className="mt-20 flex flex-col-reverse items-start justify-between gap-6 border-t border-dark-15 pt-8 md:flex-row md:items-center">
+        {/* oversized signature watermark — signs off the page */}
+        <div
+          className="pointer-events-none mt-20 -mb-6 select-none"
+          aria-hidden="true"
+        >
+          <svg
+            viewBox="0 0 1200 220"
+            preserveAspectRatio="xMidYMid meet"
+            className="block h-auto w-full overflow-visible"
+          >
+            <text
+              x="600"
+              y="180"
+              textAnchor="middle"
+              fontFamily="var(--font-display), 'Times New Roman', serif"
+              fontStyle="italic"
+              fontWeight={500}
+              fontSize={230}
+              letterSpacing="-8"
+              fill="transparent"
+              stroke="#1A1A1A"
+              strokeWidth={2}
+              opacity={0.35}
+              className="signature-drift"
+            >
+              {`${profile.firstName}${profile.lastName.toLowerCase()}`}
+            </text>
+          </svg>
+        </div>
+
+        <div className="mt-8 flex flex-col-reverse items-start justify-between gap-6 border-t border-dark-15 pt-8 md:flex-row md:items-center">
           <div className="flex items-center gap-6">
             <Logo size={28} />
             <span className="text-[14px] text-dark-50">

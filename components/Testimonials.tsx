@@ -56,7 +56,7 @@ function CaseStudy({
   reverse?: boolean;
 }) {
   return (
-    <div className="overflow-hidden rounded-[var(--radius-section-regular)] border border-lumen/20 bg-lumen/5">
+    <div className="rounded-section overflow-hidden border border-lumen/20 bg-lumen/5">
       <div
         className={`grid gap-10 p-8 md:grid-cols-[auto_1fr_auto] md:items-center md:gap-12 md:p-14 ${
           reverse ? "md:[&>*:first-child]:order-3" : ""
@@ -111,7 +111,7 @@ function CaseStudy({
 export default function Testimonials() {
   return (
     // full-bleed dark band with a rounded top, as on the live site
-    <section className="rounded-t-[80px] bg-vast text-lumen">
+    <section className="rounded-section-t bg-vast text-lumen">
       <div className="px-5 py-28 md:px-10 md:py-36">
         <div className="mx-auto max-w-[1240px]">
           <Reveal className="text-center">

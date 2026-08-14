@@ -93,16 +93,11 @@ export default function TerminalPill() {
 
   return (
     <div
-      className="relative flex h-[74px] items-center gap-3 rounded-[26px] border-2 border-vast bg-lumen pr-7 pl-6"
+      className="relative flex h-[74px] items-center gap-3  bg-lumen pr-7 pl-6"
       role="img"
       aria-label="A terminal running build commands"
     >
-      {/* running indicator */}
-      <span className="relative flex h-2.5 w-2.5 shrink-0">
-        <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-flare opacity-60" />
-        <span className="relative inline-flex h-2.5 w-2.5 rounded-full bg-flare" />
-      </span>
-
+     
       <span className="flex items-baseline gap-2 font-mono text-[14px] whitespace-nowrap">
         <span className="text-dark-50 select-none">~/danford</span>
         <span className="font-semibold text-fathom select-none">$</span>

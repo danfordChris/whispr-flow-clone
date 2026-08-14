@@ -19,7 +19,7 @@ const LOGOS = [
 
 export default function LogoMarquee() {
   return (
-    <section className="rounded-t-[80px] bg-vast pt-[104px] pb-20 text-lumen">
+    <section className="rounded-section-t bg-vast pt-[104px] pb-20 text-lumen">
       <p className="eyebrow mb-[72px] text-center text-lumen">
         Used by professionals at
       </p>

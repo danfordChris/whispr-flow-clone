@@ -149,7 +149,7 @@ export default function FeaturedWork() {
 
   return (
     <section id="work" className="bg-vast px-4 pb-4">
-      <div className="rounded-[var(--radius-section-medium)] bg-fathom px-5 pt-24 pb-4 md:px-10 md:pt-28">
+      <div className="rounded-section bg-fathom px-5 pt-24 pb-4 md:px-10 md:pt-28">
         <div className="mx-auto max-w-[1160px]">
           <Reveal className="text-center text-lumen">
             <p className="eyebrow text-lumen/60">Featured work</p>

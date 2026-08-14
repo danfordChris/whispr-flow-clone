@@ -45,7 +45,7 @@ export default function ContactSection() {
   return (
     <section id="contact" className="bg-lumen">
       <Reveal>
-        <div className="relative overflow-hidden rounded-[80px] bg-fathom px-5 pt-24 pb-16 text-lumen md:pt-[100px]">
+        <div className="rounded-section relative overflow-hidden bg-fathom px-5 pt-24 pb-16 text-lumen md:pt-[100px]">
           <Image
             src="/img/cta-bg.jpg"
             alt=""
@@ -182,7 +182,7 @@ export default function ContactSection() {
             </div>
 
             <div className="mt-12 flex justify-center">
-              <div className="flex h-[64px] items-center justify-center rounded-[22px] border-2 border-lumen/40 px-7">
+              <div className="flex h-[64px] items-center justify-center ">
                 <Prompt path="~/danford" dark size={15} />
               </div>
             </div>
