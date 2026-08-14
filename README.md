@@ -1,57 +1,93 @@
-# whisperflow
+# danfordchris.dev
 
-A port of the [wisprflow.ai](https://wisprflow.ai) marketing site to Next.js 16 (App Router) + Tailwind v4.
-
-The original is a Webflow build driven by GSAP ScrollTrigger. This port reimplements
-the same structure, design system, and interactions with React state, CSS animations,
-`IntersectionObserver`, and sticky scroll tracks — no GSAP or Webflow runtime.
+Portfolio for **Danford Chriss** — Mobile Engineer, Flutter Developer, Full Stack
+Developer, DevOps Engineer — built on Next.js 16 (App Router) + Tailwind v4.
 
 ```bash
 npm run dev
 ```
 
-## Design system
+| Route | What it is |
+| --- | --- |
+| `/` | The portfolio |
+| `/wispr` | A front-end port of [wisprflow.ai](https://wisprflow.ai), kept as the design study the portfolio's visual language came from (`noindex`) |
 
-Tokens in `app/globals.css` are lifted from the live site's Webflow variable collection:
+## Where the design came from
+
+The visual language is lifted from a port of the Wispr Flow marketing site: the
+same token set, type pairing, sticky scroll tracks, path-following marquees and
+per-character hover rolls, re-pointed at portfolio content.
 
 | Token | Value | Use |
 | --- | --- | --- |
 | `lumen` | `#ffffeb` | page background |
-| `lumen-dark` | `#e4e4d0` | segmented control, title bars |
-| `vast` | `#1a1a1a` | text, borders, dark sections |
-| `dawn` | `#f0d7ff` | primary button, accent panels |
-| `fathom` | `#034f46` | teal feature sections |
-| `glow` / `flare` / `signal` | `#ffa946` / `#ff6c4c` / `#ffbcf2` | filler / correction / repetition highlights |
+| `lumen-dark` | `#e4e4d0` | nav border, cards, panels |
+| `vast` | `#1a1a1a` | text, borders, dark bands |
+| `dawn` | `#f0d7ff` | primary button, accents |
+| `fathom` | `#034f46` | teal sections, role list |
+| `flare` | `#ff6c4c` | active indicators, bullets |
+| `glow` / `signal` | `#ffa946` / `#ffbcf2` | badges, tags |
 
-Type is the original pairing: **EB Garamond** (display, italic for emphasis) and
-**Figtree** (body), loaded via `next/font/google`.
+Type is **EB Garamond** (display, italic for emphasis) + **Figtree** (body).
 
 Custom classes live inside `@layer components` so Tailwind utilities always win
-over them — without this, `.btn { display: inline-flex }` beats `hidden` and the
-nav CTA leaks onto mobile.
+over them — without this, `.btn { display: inline-flex }` beats `hidden`.
+
+## Where the content came from
+
+Everything is extracted from the previous portfolio at `zogo-portfolio`, which
+was treated as **read-only** — nothing in it was modified. All copy lives in one
+typed module, `lib/portfolio.ts`:
+
+- profile, location, roles, bio, CV link, SEO metadata
+- 4 social links
+- 3 expertise areas with their full tech stacks
+- 5 services
+- 2 products (ContentLab, Blog)
+- 6 career roles with responsibilities
+- 12 projects with descriptions, tech, categories, screen lists and store links
+- 5 personal activities, and the contact form's fields and copy
 
 ## Sections
 
-| Component | What it ports |
+| Component | What it does |
 | --- | --- |
-| `Nav` | Sticky pill bar, Dictation/Notetaker segmented toggle, per-character hover roll on links, mobile sheet |
-| `Hero` | Display headline, plus two counter-rotating SVG `textPath` rings (messy transcript in grey, cleaned copy on a black band) sized as huge circles tangent to the mic pill |
-| `LogoMarquee` | Dark rounded section with an infinite horizontal logo marquee |
-| `FasterThanTyping` | Teal panel comparing Keyboard 45 wpm vs Flow 220 wpm as vertical marquees running at proportional speeds |
-| `CleanupDemo` | Scroll-linked demo: raw dictation types in, fillers/corrections/repetitions light up and strike through, "Cleaning up…" resolves to clean text, then sends as chat bubbles |
-| `HowItWorks` | Sticky 300vh track where scroll position drives the three-tab rail, indicator, stage visuals, and copy (tabs also clickable) |
-| `MakesItEasy` | Four alternating feature rows with live demos: language switching, vocabulary modal, snippet expansion, tone toggle |
-| `Privacy` | Privacy Mode switch and certification chips |
-| `Testimonials` | Dark section with two case studies and four quote cards |
-| `Faq` | Two-pane question list / answer panel on desktop, accordion on mobile |
-| `StartFlowing`, `Footer` | Closing CTA and the full footer link map |
+| `PortfolioNav` | Pill bar, Work/About segmented toggle, per-character hover-roll links, mobile sheet |
+| `PortfolioHero` | Name in display serif, typewriter role cycle, and two SVG `textPath` marquees — the tech stack on a grey loop, roles on a black ribbon |
+| `TechMarquee` | Dark band, two counter-scrolling rows of the full stack |
+| `FeaturedWork` | Pinned scroll track; the IPF OS card walks its five modules as you scroll, over a screen-name marquee, closing on a stat row |
+| `ServicesTabs` | Sticky 500vh track; scroll drives a five-item rail, coral indicator, per-service stage and copy (rail is clickable) |
+| `ProjectsGrid` | All 12 projects, filterable by mobile/web/game with live counts, each card expanding to reveal its screen list |
+| `ExpertiseTrack` | Sticky scroll-linked track — one stack card cross-fades across three expertise areas, cycling a highlight through the chips |
+| `CareerTimeline` | Cream card wrapping a dark-teal role list, detail pane alongside on desktop, accordion on mobile |
+| `Products` | ContentLab and Blog cards |
+| `About` | Dark band with portrait, bio, socials and activities |
+| `ContactSection` | Full-bleed CTA with a validated contact form |
+| `PortfolioFooter` | Full link map, services, products, socials |
+
+## Images
+
+`public/img/` holds **placeholder assets** — stand-ins, not real work:
+
+- `work/*.jpg` — one per project, from picsum.photos
+- `avatar.jpg` — portrait placeholder
+- `flow-card.jpg`, `cta-bg.jpg` — section backdrops
+- `logo-*.svg`, `pub-*.svg`, `badges.svg` — used by `/wispr` only
+
+**Swap these for real screenshots and a real photo before publishing.**
 
 ## Notes
 
-- Company wordmarks in the logo marquee are set as type rather than hot-linked
-  brand SVGs from the original's CDN.
 - All motion is gated behind `prefers-reduced-motion`.
-- Scroll-linked sections read `getBoundingClientRect()` inside a
-  `requestAnimationFrame`-throttled scroll listener; they degrade to their
-  first frame if JS is unavailable.
-# whispr-flow-clone
+- `Reveal` uses an IntersectionObserver, plus a synchronous rect check on mount.
+  The un-revealed state is `opacity: 0`, and IO callbacks are suppressed on
+  hidden documents (prerender, background tabs, some crawlers) — without the
+  mount check, above-the-fold content could stay invisible.
+- `PathMarquee` advances `startOffset` and wraps at the measured width of one
+  text repetition, so the loop is seamless at any speed.
+- The contact form has no mail transport wired up; it validates, then hands off
+  to the user's mail client. Point it at a real endpoint (or restore EmailJS)
+  before going live.
+- **Gotcha:** using `<Image>` without importing `next/image` does *not* fail
+  typecheck — `Image` is a DOM global in `lib.dom`, so `tsc` resolves it to
+  `window.Image` and it only breaks at runtime.
