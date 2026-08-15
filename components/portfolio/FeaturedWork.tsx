@@ -144,12 +144,180 @@ function ModulePanel({ p }: { p: number }) {
   );
 }
 
+type Module = (typeof MODULES)[number];
+
+/** The plain, one-shot mobile figure — used when a track has ≤ 3 items
+    and the sticky walkthrough would be overkill. */
+function MobileModuleFigure({ module: m }: { module: Module }) {
+  return (
+    <figure>
+      <div className="flex gap-3">
+        <div className="relative aspect-[16/10] flex-1 overflow-hidden rounded-[14px] border-2 border-vast bg-vast">
+          <Image
+            src={m.web}
+            alt={`IPF OS ${m.name} — web`}
+            fill
+            sizes="70vw"
+            className="object-cover object-top"
+          />
+        </div>
+        <div className="relative w-[64px] shrink-0 overflow-hidden rounded-[12px] border-2 border-vast bg-vast">
+          <Image
+            src={m.mobile}
+            alt={`IPF OS ${m.name} — mobile`}
+            fill
+            sizes="64px"
+            className="object-cover object-top"
+          />
+        </div>
+      </div>
+      <figcaption className="mt-2">
+        <span className="text-[15px] font-semibold text-lumen">{m.name}</span>
+        <span className="ml-2 text-[13px] text-lumen/60">{m.detail}</span>
+      </figcaption>
+    </figure>
+  );
+}
+
+/** Scroll-linked, one-module-at-a-time card.
+
+    Two design rules to keep it tight:
+      1. All five web images share ONE aspect-16/10 box — layered, faded
+         between via opacity. The card's height is then image + caption,
+         nothing else.
+      2. The phone screenshot is positioned against that image box (not
+         against a stretched flex container), so it sits on the image's
+         corner instead of floating in dead space.
+
+    Result: the card hugs its content, the layout has no phantom
+    vertical gap, and one module reads cleanly at a time. */
+function MobileModuleWalkthrough() {
+  const { ref, progress } = useScrollProgress<HTMLDivElement>();
+  const active = Math.min(
+    MODULES.length - 1,
+    Math.floor(progress * MODULES.length * 0.999),
+  );
+
+  // Snappy track — ~26vh per module keeps the whole cycle inside a
+  // single tap-scroll's worth of motion, so the "still-scrolling
+  // after the last image" tail feels like a flick, not a wait.
+  return (
+    <div
+      ref={ref}
+      className="relative mt-4"
+      style={{ height: `${26 * MODULES.length}vh` }}
+    >
+      {/* The whole sticky viewport = walkthrough card + stats card,
+          stacked. Both stay pinned together while the user scrolls.
+          Only the module inside the card fades between frames — the
+          stats never move. */}
+      <div className="sticky top-[calc(var(--nav-h)+16px)] space-y-3">
+        <div className="rounded-[24px] border-2 border-vast bg-lumen-dark p-4 pb-5 shadow-[6px_6px_0_0_#1a1a1a]">
+        {/* header + progress */}
+        <div className="mb-2.5 flex items-center justify-between">
+          <span className="text-[11px] font-semibold tracking-[0.14em] text-dark-70 uppercase">
+            Modules
+          </span>
+          <span className="font-mono text-[11px] text-dark-50">
+            {String(active + 1).padStart(2, "0")} / {String(MODULES.length).padStart(2, "0")}
+          </span>
+        </div>
+        <div className="mb-4 flex gap-1.5">
+          {MODULES.map((m, i) => (
+            <span
+              key={m.id}
+              className="h-1.5 flex-1 rounded-full transition-colors duration-300"
+              style={{
+                background: i === active ? "#1a1a1a" : "#1a1a1a26",
+              }}
+            />
+          ))}
+        </div>
+
+        {/* image + phone — one shared aspect-ratio box; only opacity moves */}
+        <div className="relative">
+          <div className="relative aspect-[16/10] w-full overflow-hidden rounded-[14px] border-2 border-vast bg-vast shadow-[0_16px_40px_-24px_#000000cc]">
+            {MODULES.map((m, i) => (
+              <Image
+                key={m.id}
+                src={m.web}
+                alt={`IPF OS ${m.name} — web`}
+                fill
+                sizes="88vw"
+                /* First module renders eagerly so the default view
+                   (progress=0, active=0) is already paint-ready. */
+                priority={i === 0}
+                className="object-cover object-top transition-opacity duration-500 [transition-timing-function:cubic-bezier(0.16,1,0.3,1)]"
+                style={{ opacity: i === active ? 1 : 0 }}
+                aria-hidden={i !== active}
+              />
+            ))}
+          </div>
+          {/* phone anchored to the image's lower-left corner */}
+          <div className="absolute -bottom-6 left-4 w-[68px] overflow-hidden rounded-[12px] border-2 border-vast bg-vast shadow-[0_10px_24px_-14px_#000000cc]">
+            <div className="relative aspect-[736/1600] w-full">
+              {MODULES.map((m, i) => (
+                <Image
+                  key={m.id}
+                  src={m.mobile}
+                  alt={`IPF OS ${m.name} — mobile`}
+                  fill
+                  sizes="68px"
+                  priority={i === 0}
+                  className="object-cover object-top transition-opacity duration-500"
+                  style={{ opacity: i === active ? 1 : 0 }}
+                  aria-hidden={i !== active}
+                />
+              ))}
+            </div>
+          </div>
+        </div>
+
+        {/* caption — cleared past the overlapping phone */}
+        <div className="relative mt-8 min-h-[60px] pl-1">
+          {MODULES.map((m, i) => (
+            <div
+              key={m.id}
+              className="absolute inset-0 transition-opacity duration-500"
+              style={{ opacity: i === active ? 1 : 0 }}
+              aria-hidden={i !== active}
+            >
+              <p className="font-[family-name:var(--font-display)] text-[22px] leading-[1.05]">
+                {m.name}
+              </p>
+              <p className="mt-1.5 text-[13.5px] leading-[1.45] text-dark-70">
+                {m.detail}
+              </p>
+            </div>
+          ))}
+        </div>
+        </div>
+        {/* stats — original visual language (big serif numbers on the
+            section's vast ground, hairline divider). Kept inside the
+            sticky so they stay locked to the walkthrough card. */}
+        <div className="grid grid-cols-2 gap-6 border-t border-lumen/15 pt-6">
+          {stats.map((s) => (
+            <div key={s.label}>
+              <div className="font-[family-name:var(--font-display)] text-[clamp(2rem,7vw,2.6rem)] leading-none text-lumen">
+                {s.value}
+              </div>
+              <div className="mt-1.5 text-[13px] leading-[1.35] whitespace-pre-line text-lumen/60">
+                {s.label}
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
+  );
+}
+
 export default function FeaturedWork() {
   const { ref, progress } = useScrollProgress<HTMLDivElement>();
 
   return (
     <section id="work" className="bg-vast px-4 pb-4">
-      <div className="rounded-section bg-vast px-5 pt-24 pb-4 md:px-10 md:pt-28">
+      <div className="rounded-section bg-vast px-5 pt-16 pb-4 md:px-10 md:pt-28">
         <div className="mx-auto max-w-[1160px]">
           <Reveal className="text-center text-lumen">
             <p className="eyebrow text-lumen/60">Featured work</p>
@@ -232,24 +400,29 @@ export default function FeaturedWork() {
           </div>
         </div>
 
-        {/* mobile — the modules as a plain, readable list of screens */}
-        <div className="mx-auto mt-12 max-w-[1160px] md:hidden">
-          <div className="rounded-[28px] border-2 border-vast bg-lumen-dark p-6 shadow-[6px_6px_0_0_#1a1a1a]">
+        {/* mobile — a sticky, scroll-driven walkthrough of the modules.
+            Kicks in above three items so short lists still render statically
+            (no phantom scroll on a two-module product). Each module fades
+            in over ~60vh of scroll; the caption and phone inset swap with
+            the web shot in one motion, and the progress dots make the run
+            legible. Mirrors the ServicesTabs desktop feel. */}
+        <div className="mx-auto mt-8 max-w-[1160px] md:hidden">
+          <div className="rounded-[24px] border-2 border-vast bg-lumen-dark p-5 shadow-[6px_6px_0_0_#1a1a1a]">
             <p className="text-[12px] font-semibold tracking-[0.08em] text-dark-50 uppercase">
               {featured.category.join(" + ")} · enterprise
             </p>
-            <h3 className="mt-2 font-[family-name:var(--font-display)] text-[34px] leading-[1]">
+            <h3 className="mt-1.5 font-[family-name:var(--font-display)] text-[30px] leading-[1]">
               IPF OS
             </h3>
-            <div className="mt-5 flex gap-8">
+            <div className="mt-4 flex gap-8">
               <div>
-                <div className="font-[family-name:var(--font-display)] text-[34px] leading-none">
+                <div className="font-[family-name:var(--font-display)] text-[30px] leading-none">
                   {MODULES.length}
                 </div>
                 <div className="text-[12px] text-dark-70">modules</div>
               </div>
               <div>
-                <div className="font-[family-name:var(--font-display)] text-[34px] leading-none">
+                <div className="font-[family-name:var(--font-display)] text-[30px] leading-none">
                   2
                 </div>
                 <div className="text-[12px] text-dark-70">platforms</div>
@@ -257,45 +430,21 @@ export default function FeaturedWork() {
             </div>
           </div>
 
-          <div className="mt-4 flex flex-col gap-5">
-            {MODULES.map((m) => (
-              <figure key={m.id}>
-                <div className="flex gap-3">
-                  <div className="relative aspect-[16/10] flex-1 overflow-hidden rounded-[14px] border-2 border-vast bg-vast">
-                    <Image
-                      src={m.web}
-                      alt={`IPF OS ${m.name} — web`}
-                      fill
-                      sizes="70vw"
-                      className="object-cover object-top"
-                    />
-                  </div>
-                  <div className="relative w-[64px] shrink-0 overflow-hidden rounded-[12px] border-2 border-vast bg-vast">
-                    <Image
-                      src={m.mobile}
-                      alt={`IPF OS ${m.name} — mobile`}
-                      fill
-                      sizes="64px"
-                      className="object-cover object-top"
-                    />
-                  </div>
-                </div>
-                <figcaption className="mt-2">
-                  <span className="text-[15px] font-semibold text-lumen">
-                    {m.name}
-                  </span>
-                  <span className="ml-2 text-[13px] text-lumen/60">
-                    {m.detail}
-                  </span>
-                </figcaption>
-              </figure>
-            ))}
-          </div>
+          {MODULES.length > 3 ? (
+            <MobileModuleWalkthrough />
+          ) : (
+            <div className="mt-4 flex flex-col gap-5">
+              {MODULES.map((m) => (
+                <MobileModuleFigure key={m.id} module={m} />
+              ))}
+            </div>
+          )}
         </div>
 
-        {/* stat row */}
-        <Reveal className="mx-auto mt-16 max-w-[1160px] pb-20">
-          <div className="grid grid-cols-2 gap-8 border-t border-lumen/15 pt-12 md:grid-cols-4">
+        {/* stat row — desktop only; mobile renders stats inside the
+            sticky walkthrough so they're always visible with the card */}
+        <Reveal className="mx-auto hidden max-w-[1160px] md:mt-16 md:block md:pb-20">
+          <div className="grid grid-cols-2 gap-8 border-t border-lumen/15 md:grid-cols-4 md:pt-12">
             {stats.map((s) => (
               <div key={s.label}>
                 <div className="font-[family-name:var(--font-display)] text-[clamp(2.4rem,4vw,3.4rem)] leading-none text-lumen">

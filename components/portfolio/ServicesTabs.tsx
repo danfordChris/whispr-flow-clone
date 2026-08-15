@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import { Reveal } from "../primitives";
+import { MobileWalkthrough, Reveal } from "../primitives";
 import { Prompt } from "./TerminalPill";
 import { services } from "@/lib/portfolio";
 
@@ -178,7 +178,36 @@ export default function ServicesTabs() {
         </Reveal>
       </div>
 
-      <div ref={trackRef} className="relative h-[500vh]">
+      {/* mobile — sticky walkthrough, one service at a time. Same
+          pattern as FeaturedWork modules; no wrapping card per item so
+          the content sits directly on the section's lumen ground. */}
+      <div className="px-5 pt-2 pb-16 md:hidden">
+        <MobileWalkthrough
+          label="What I do"
+          vhPerItem={28}
+          items={services.map((s, i) => (
+            <div key={s.title} className="pl-1">
+              <div className="flex items-center gap-3">
+                <span className="rounded-full border-2 border-vast bg-vast px-2.5 py-1 font-mono text-[11px] font-semibold text-lumen">
+                  {String(i + 1).padStart(2, "0")}
+                </span>
+                <h3 className="font-[family-name:var(--font-display)] text-[28px] leading-[1.05] font-normal">
+                  {s.title}
+                </h3>
+              </div>
+              <p className="mt-4 text-[16px] leading-[1.5] text-dark-70">
+                {s.description}
+              </p>
+              <div className="relative mt-6 h-[280px]">
+                <Stage index={i} active />
+              </div>
+            </div>
+          ))}
+        />
+      </div>
+
+      {/* desktop — the original sticky scroll-linked track */}
+      <div ref={trackRef} className="relative hidden h-[500vh] md:block">
         <div className="sticky top-0 flex h-screen items-center px-5">
           <div className="mx-auto grid w-full max-w-[1184px] items-center gap-10 md:grid-cols-[260px_1fr_320px]">
             {/* rail */}
