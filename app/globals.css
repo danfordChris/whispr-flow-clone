@@ -68,6 +68,12 @@ html {
   scroll-behavior: smooth;
 }
 
+/* Any anchor-driven scroll (nav clicks, `/#work` deep-links) lands
+   BELOW the fixed 69px nav pill instead of underneath it. */
+section[id] {
+  scroll-margin-top: calc(var(--nav-h) + 12px);
+}
+
 body {
   background-color: var(--color-lumen);
   color: var(--color-vast);

@@ -1,6 +1,8 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import Link from "next/link";
+import { usePathname, useRouter } from "next/navigation";
+import { useCallback, useEffect, useState } from "react";
 import { RollText } from "../primitives";
 import Logo from "./Logo";
 import { profile } from "@/lib/portfolio";
@@ -11,10 +13,26 @@ const SECTIONS = [
   { id: "about", label: "About" },
 ] as const;
 
-const TABS = ["Work", "About"] as const;
+/* Sections that live on the home page. Anchors outside this set fall
+   back to a client-side lookup — but any nav-driven jump routes
+   through here first, so a typo can't silently no-op. */
+const HOME_ANCHORS = new Set([
+  "top",
+  "work",
+  "services",
+  "projects",
+  "expertise",
+  "career",
+  "products",
+  "about",
+  "contact",
+]);
 
 export default function PortfolioNav() {
-  const [tab, setTab] = useState<(typeof TABS)[number]>("Work");
+  const pathname = usePathname();
+  const router = useRouter();
+  const isHome = pathname === "/";
+
   const [open, setOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
 
@@ -32,10 +50,53 @@ export default function PortfolioNav() {
     };
   }, [open]);
 
-  const jump = (id: string) => {
-    document.getElementById(id)?.scrollIntoView({ behavior: "smooth" });
-    setOpen(false);
-  };
+  /* When we land on the home page carrying a hash (e.g. arriving from
+     /projects → /#work), the App Router does not always scroll for us —
+     it depends on how the navigation was initiated. Run one deferred
+     scroll after mount if a matching hash target exists. */
+  useEffect(() => {
+    if (!isHome) return;
+    const hash = window.location.hash.replace("#", "");
+    if (!hash) return;
+    // rAF twice → wait for layout to settle after route-driven paints
+    requestAnimationFrame(() =>
+      requestAnimationFrame(() => {
+        document
+          .getElementById(hash)
+          ?.scrollIntoView({ behavior: "smooth", block: "start" });
+      }),
+    );
+  }, [isHome, pathname]);
+
+  const jump = useCallback(
+    (id: string) => {
+      setOpen(false);
+      if (isHome) {
+        if (id === "top") {
+          window.scrollTo({ top: 0, behavior: "smooth" });
+          return;
+        }
+        document
+          .getElementById(id)
+          ?.scrollIntoView({ behavior: "smooth", block: "start" });
+        return;
+      }
+      // Off-home: route back home carrying the anchor.
+      const target = HOME_ANCHORS.has(id) ? `/#${id}` : "/";
+      router.push(target);
+    },
+    [isHome, router],
+  );
+
+  const goHome = useCallback(
+    (e: React.MouseEvent) => {
+      if (!isHome) return; // let the Link navigate
+      e.preventDefault();
+      setOpen(false);
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    },
+    [isHome],
+  );
 
   return (
     <header className="pointer-events-none fixed inset-x-0 top-0 z-50 px-3 pt-4 md:px-4">
@@ -44,38 +105,14 @@ export default function PortfolioNav() {
           scrolled ? "shadow-[0_6px_18px_-10px_#1a1a1a40]" : ""
         }`}
       >
-        <div className="flex items-center gap-4 md:gap-7">
-          <a href="#top" className="shrink-0">
-            <Logo size={26} />
-          </a>
-
-          <div className="relative hidden items-center rounded-full bg-lumen-dark p-[2px] sm:flex">
-            <span
-              className="absolute top-[2px] bottom-[2px] rounded-full bg-[#fffdf9] shadow-[0_1px_2px_#1a1a1a1f] transition-all duration-[420ms] [transition-timing-function:cubic-bezier(0.16,1,0.3,1)]"
-              style={{
-                left: tab === "Work" ? 2 : "50%",
-                width: "calc(50% - 2px)",
-              }}
-              aria-hidden="true"
-            />
-            {TABS.map((t) => (
-              <button
-                key={t}
-                type="button"
-                onClick={() => {
-                  setTab(t);
-                  jump(t.toLowerCase());
-                }}
-                aria-pressed={tab === t}
-                className={`relative z-10 rounded-full px-4 py-2 text-[16px] leading-none font-semibold transition-colors duration-200 ${
-                  tab === t ? "text-vast" : "text-dark-70 hover:text-vast"
-                }`}
-              >
-                {t}
-              </button>
-            ))}
-          </div>
-        </div>
+        <Link
+          href="/"
+          onClick={goHome}
+          aria-label="Home"
+          className="shrink-0"
+        >
+          <Logo size={26} />
+        </Link>
 
         <div className="flex items-center gap-5 md:gap-7">
           <nav className="hidden items-center gap-6 md:flex">
