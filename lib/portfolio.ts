@@ -164,12 +164,12 @@ export const products = [
     cta: "Get Started",
   },
   {
-    title: "Blog",
+    title: "Notes",
     eyebrow: "Writing & Insights",
     description:
-      "A dedicated place for engineering notes, product thinking, mobile development insights, and experiments worth sharing.",
-    href: "/blog/",
-    cta: "Visit Blog",
+      "Field notes on AI, agent design, and how the development lifecycle is being rewritten — with a house style that matches the one you're reading.",
+    href: "https://blogs.danfordchris.dev",
+    cta: "Read the notes",
   },
 ];
 
