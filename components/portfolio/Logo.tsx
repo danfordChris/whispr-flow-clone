@@ -52,10 +52,12 @@ export default function Logo({
   dark = false,
   size = 28,
   showName = true,
+  showMark = true,
 }: {
   dark?: boolean;
   size?: number;
   showName?: boolean;
+  showMark?: boolean;
 }) {
   const ink = dark ? "#ffffeb" : "#1a1a1a";
 
@@ -64,7 +66,7 @@ export default function Logo({
       className="inline-flex items-center gap-[9px]"
       aria-label="Danford Chriss"
     >
-      <Mark size={size} dark={dark} />
+      {showMark && <Mark size={size} dark={dark} />}
       {showName && (
         <span
           style={{
