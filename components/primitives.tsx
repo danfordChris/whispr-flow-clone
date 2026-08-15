@@ -114,6 +114,68 @@ export function Reveal({
 }
 
 /* ------------------------------------------------------------------
+   Sticky, scroll-driven walkthrough for mobile lists that would
+   otherwise stack endlessly. Renders one item at a time inside a
+   pinned card with progress dots. Same treatment used across
+   FeaturedWork, FeaturedProjects, and About.
+
+   All items are grid-stacked in the same 1/1 cell so the stage takes
+   the height of the tallest item — no jumps between cards of
+   different sizes, no absolute positioning maths.
+   ------------------------------------------------------------------ */
+export function MobileWalkthrough({
+  label: _label,
+  header,
+  items,
+  vhPerItem = 26,
+}: {
+  /** Accepted for API stability, but no longer rendered — kept so
+      existing callers don't need to change. */
+  label?: string;
+  /** Optional content pinned ABOVE the fading grid, inside the same
+      sticky wrapper. Use for a section heading + description that
+      should stay visible while items cycle underneath. */
+  header?: ReactNode;
+  items: ReactNode[];
+  /** How many viewport-heights of scroll each item consumes. Smaller
+      = snappier cycling, but too small feels rushed. Default 26. */
+  vhPerItem?: number;
+}) {
+  const { ref, progress } = useScrollProgress<HTMLDivElement>();
+  const active = Math.min(
+    items.length - 1,
+    Math.floor(progress * items.length * 0.999),
+  );
+
+  return (
+    <div
+      ref={ref}
+      className="relative"
+      style={{ height: `${vhPerItem * items.length}vh` }}
+    >
+      <div className="sticky top-[calc(var(--nav-h)+16px)]">
+        {header}
+        <div className="grid">
+          {items.map((node, i) => (
+            <div
+              key={i}
+              className="[grid-area:1/1] transition-opacity duration-500 [transition-timing-function:cubic-bezier(0.16,1,0.3,1)]"
+              style={{
+                opacity: i === active ? 1 : 0,
+                pointerEvents: i === active ? "auto" : "none",
+              }}
+              aria-hidden={i !== active}
+            >
+              {node}
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
+  );
+}
+
+/* ------------------------------------------------------------------
    Progress of an element through the viewport, 0 → 1.
    Drives the scroll-linked sections.
    ------------------------------------------------------------------ */

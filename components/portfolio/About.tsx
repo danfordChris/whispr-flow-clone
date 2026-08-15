@@ -319,18 +319,40 @@ export default function About() {
         </div>
       </div>
 
-      {/* mobile: the same cards, stacked and readable */}
-      <div className="flex flex-col gap-4 px-5 py-16 md:hidden">
-        {CARDS.map((c) => {
+      {/* mobile — the desktop scatter, translated to a vertical scroll.
+          Cards keep their tones, sizes and slight rotations; alignment
+          alternates left / right so the field feels scattered instead
+          of listed. Reveal-on-scroll gives each card its own arrival. */}
+      <div className="mx-auto max-w-[520px] px-4 pt-4 pb-16 md:hidden">
+        {CARDS.map((c, i) => {
           const t = TONE[c.tone];
+          const bias = i % 3;
+          const align =
+            bias === 0
+              ? "mr-auto"
+              : bias === 1
+                ? "ml-auto mr-2"
+                : "mx-auto";
+          const width =
+            bias === 0 ? "w-[86%]" : bias === 1 ? "w-[80%]" : "w-[92%]";
+          const tilt = (c.rotate ?? 0) * 0.5;
           return (
-            <div
+            <Reveal
               key={c.id}
-              className="rounded-[24px] border-2 border-vast p-6"
-              style={{ background: t.bg, color: t.fg }}
+              delay={(i % 3) * 60}
+              className={`mb-5 ${align} ${width}`}
             >
-              {c.body}
-            </div>
+              <div
+                className="rounded-[24px] border-2 border-vast p-5 shadow-[6px_6px_0_0_#1a1a1a]"
+                style={{
+                  background: t.bg,
+                  color: t.fg,
+                  transform: `rotate(${tilt}deg)`,
+                }}
+              >
+                {c.body}
+              </div>
+            </Reveal>
           );
         })}
       </div>

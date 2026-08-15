@@ -9,7 +9,7 @@ import {
   type CSSProperties,
   type ReactNode,
 } from "react";
-import { Reveal, useScrollProgress } from "../primitives";
+import { MobileWalkthrough, Reveal, useScrollProgress } from "../primitives";
 import Gallery from "./Gallery";
 import { projects, type Project } from "@/lib/portfolio";
 
@@ -98,12 +98,19 @@ function ProjectCard({
   project,
   tone,
   onOpen,
+  detailed = false,
 }: {
   project: Project;
   tone: Tone;
   onOpen: () => void;
+  /** Compact for the desktop scatter (image + title only); detailed
+      for the mobile walkthrough (adds description + tech chips). */
+  detailed?: boolean;
 }) {
   const t = TONE[tone];
+  const chipBg = t.darkText ? "#ffffeb" : "#1a1a1a";
+  const chipFg = t.darkText ? "#1a1a1a" : "#ffffeb";
+  const chipBorder = t.darkText ? "#1a1a1a" : "#ffffeb";
   return (
     <button
       type="button"
@@ -112,31 +119,45 @@ function ProjectCard({
       className={`${CARD_BASE} group flex w-full cursor-pointer flex-col text-left`}
       style={{ background: t.bg, color: t.fg }}
     >
-      <div className="relative aspect-[16/10] w-full overflow-hidden border-b-2 border-vast">
+      <div className={`relative w-full overflow-hidden border-b-2 border-vast ${detailed ? "aspect-[4/3]" : "aspect-[16/10]"}`}>
         <Image
           src={project.image}
           alt={project.title}
           fill
-          sizes="440px"
+          sizes={detailed ? "92vw" : "440px"}
           className="object-cover transition-transform duration-500 group-hover:scale-[1.03]"
         />
         <span
           className="absolute top-3 left-3 rounded-full border-2 px-2.5 py-1 text-[11px] font-semibold capitalize"
-          style={{
-            background: t.darkText ? "#ffffeb" : "#1a1a1a",
-            color: t.darkText ? "#1a1a1a" : "#ffffeb",
-            borderColor: t.darkText ? "#1a1a1a" : "#ffffeb",
-          }}
+          style={{ background: chipBg, color: chipFg, borderColor: chipBorder }}
         >
           {project.category.join(" + ")}
         </span>
       </div>
-      <div className="flex flex-1 flex-col gap-2 p-5">
-        <h3 className="font-[family-name:var(--font-display)] text-[22px] leading-[1.1]">
+      <div className={`flex flex-1 flex-col ${detailed ? "gap-3 p-6" : "gap-2 p-5"}`}>
+        <h3 className={`font-[family-name:var(--font-display)] leading-[1.05] ${detailed ? "text-[28px]" : "text-[22px]"}`}>
           {project.title}
         </h3>
+        {detailed && (
+          <>
+            <p className="text-[14.5px] leading-[1.5]" style={{ opacity: 0.78 }}>
+              {project.description}
+            </p>
+            <ul className="mt-1 flex flex-wrap gap-1.5">
+              {project.tech.slice(0, 6).map((tech) => (
+                <li
+                  key={tech}
+                  className="rounded-full border px-2.5 py-1 text-[11px] font-medium"
+                  style={{ borderColor: chipBorder, opacity: 0.75 }}
+                >
+                  {tech}
+                </li>
+              ))}
+            </ul>
+          </>
+        )}
         <span
-          className="mt-auto inline-flex items-center gap-1.5 pt-2 text-[13px] font-semibold"
+          className={`mt-auto inline-flex items-center gap-1.5 ${detailed ? "pt-3 text-[14px]" : "pt-2 text-[13px]"} font-semibold`}
           style={{ opacity: 0.75 }}
         >
           {project.shots.length}{" "}
@@ -291,7 +312,10 @@ export default function FeaturedProjects() {
 
   return (
     <section id="projects" className="bg-lumen">
-      <div className="px-5 pt-28 md:px-10 md:pt-36">
+      {/* Desktop heading — sits above the sticky wave. On mobile the
+          heading lives INSIDE the walkthrough's sticky wrapper so it
+          stays visible while the card cycles. */}
+      <div className="hidden px-5 pt-28 md:block md:px-10 md:pt-36">
         <Reveal className="mx-auto max-w-[1240px] text-center">
           <p className="eyebrow text-dark-70">Selected projects</p>
           <h2 className="mt-4 font-[family-name:var(--font-display)] text-[clamp(2.5rem,5.4vw,4.6875rem)] leading-[1] font-normal text-balance">
@@ -335,17 +359,38 @@ export default function FeaturedProjects() {
         </div>
       </div>
 
-      {/* mobile — stacked cards, same tones and rhythm */}
-      <div className="flex flex-col gap-4 px-5 py-16 md:hidden">
-        {featured.map((p, i) => (
-          <ProjectCard
-            key={p.id}
-            project={p}
-            tone={projectSlots[i].tone}
-            onOpen={() => setGallery({ project: p, at: 0 })}
-          />
-        ))}
-        <ViewAllCard tone={viewAllSlot.tone} />
+      {/* mobile — heading + card together in the sticky wrapper.
+          Only the project card fades between items on scroll; the
+          heading and description stay pinned above it. */}
+      <div className="px-3 pt-6 pb-16 md:hidden">
+        <MobileWalkthrough
+          vhPerItem={32}
+          header={
+            <div className="mb-5 px-2 text-center">
+              <p className="eyebrow text-dark-70">Selected projects</p>
+              <h2 className="mt-3 font-[family-name:var(--font-display)] text-[clamp(2rem,9vw,3rem)] leading-[1] font-normal text-balance">
+                A wave of things I&rsquo;ve{" "}
+                <em className="italic">shipped.</em>
+              </h2>
+              <p className="mx-auto mt-3 max-w-[36ch] text-[14.5px] leading-[1.45] text-dark-70">
+                {featured.length} picked across {CATEGORY_COUNT} lanes —
+                the last card opens the full catalogue.
+              </p>
+            </div>
+          }
+          items={[
+            ...featured.map((p, i) => (
+              <ProjectCard
+                key={p.id}
+                project={p}
+                tone={projectSlots[i].tone}
+                onOpen={() => setGallery({ project: p, at: 0 })}
+                detailed
+              />
+            )),
+            <ViewAllCard key="view-all" tone={viewAllSlot.tone} />,
+          ]}
+        />
       </div>
 
       {gallery && (

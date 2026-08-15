@@ -111,7 +111,7 @@ export default function PortfolioNav() {
           aria-label="Home"
           className="shrink-0"
         >
-          <Logo size={26} />
+          <Logo size={26} showMark={false} />
         </Link>
 
         <div className="flex items-center gap-5 md:gap-7">
