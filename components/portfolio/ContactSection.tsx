@@ -28,15 +28,29 @@ export default function ContactSection() {
     setErrors(next);
     if (Object.keys(next).length) return;
 
-    // No mail transport is wired up in this build — hand off to the user's
-    // mail client so the message still reaches its destination.
+    // No mail transport is wired up in this build — hand off to the
+    // user's mail client with the recipient pre-filled so the message
+    // actually reaches its destination.
+    const subject = encodeURIComponent(
+      `Project enquiry from ${values.name}`,
+    );
     const body = encodeURIComponent(
       `${values.message}\n\n— ${values.name} (${values.email})`,
     );
-    window.location.href = `mailto:?subject=${encodeURIComponent(
-      `Project enquiry from ${values.name}`,
-    )}&body=${body}`;
+    const href = `mailto:${profile.email}?subject=${subject}&body=${body}`;
+
+    // Use an anchor click so the current page doesn't unload — this
+    // avoids the blank-page flash on browsers where the mail handler
+    // takes a moment to launch, and works reliably on mobile.
+    const a = document.createElement("a");
+    a.href = href;
+    a.rel = "noopener";
+    a.click();
+
     setSent(true);
+    // Let the "opening…" chip clear after a few seconds so the form
+    // is reusable without a full reload.
+    window.setTimeout(() => setSent(false), 4000);
   };
 
   const field =

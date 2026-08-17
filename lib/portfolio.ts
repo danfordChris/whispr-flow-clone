@@ -17,6 +17,7 @@ export const profile = {
   ],
   bio: "Passionate about building scalable applications and solving complex problems with innovative solutions. I work across Flutter, React, TypeScript, Python, and DevOps to help teams launch reliable digital products.",
   site: "https://danfordchris.dev/",
+  email: "danfordchris329@gmail.com",
   cv: "https://drive.google.com/file/d/1HjBL1jao2V9kvAxCrA8fAXlWl1e-jied/view?usp=sharing",
   seoTitle:
     "Danford Chriss — Full Stack, DevOps & Mobile Engineer | danfordchris",
